@@ -1,0 +1,899 @@
+
+
+ <!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8"/>
+    <title>LearnOpenGL - Tessellation</title>	<!--<title>Learn OpenGL, extensive tutorial resource for learning Modern OpenGL</title>-->
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico"  />
+    <meta name="description" content="Learn OpenGL . com provides good and clear modern 3.3+ OpenGL tutorials with clear examples. A great resource to learn modern OpenGL aimed at beginners.">
+	<meta name="fragment" content="!"> 
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-51879160-1', 'learnopengl.com');
+      ga('send', 'pageview');
+
+    </script>
+    <script>
+	    </script>
+	<!--<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>-->
+	<script>
+		</script>
+		<script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+	<script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+	<script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+	<script>
+        window.ezstandalone = window.ezstandalone || {};
+        ezstandalone.cmd = ezstandalone.cmd || [];
+    </script>
+	<!--<script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>-->
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7855791439695850"
+     crossorigin="anonymous"></script>
+	<script src="/js/jquery-1.11.0.min.js"></script>
+	<script src="/js/hoverintent.js"></script>
+	<link rel="stylesheet" type="text/css" href="/layout.css">
+    <link rel="stylesheet" type="text/css" href="/js/styles/obsidian.css">
+    <script src="/js/highlight.pack.js"></script>    
+    <script src="/js/functions.js"></script>
+    <script type="text/javascript" src="/js/mathjax/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script>
+    // Has to be loaded last due to content bug 
+    MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>  
+        $(document).ready(function() {
+            // check if user visited from the old # based urls, re-direct to ?p= form
+            if(window.location.hash)
+            {
+                var name = window.location.hash.substring(2);
+                // name = name.replace(/-/g," ");
+                var index = name.indexOf('#'); // Remove any hash fragments from the url (Disquss adds hash fragments for comments, but results in 404 pages)
+                if(index >= 0)
+                    name = name.substring(0, index);
+                
+                window.location.href = "https://learnopengl.com/" + name;
+            } else {
+                    // Check if data has been succesfully loaded, if so: change title bar as ajax hash fragment
+                    var title = $('#content-url').text();
+                  
+					// place video tag 
+					 if(title != '' ) {
+											//var videoad = "%3Cdiv id=\'waldo-tag-14070\'%3E %3Cscript%3Egoogletag.cmd.push(function() {googletag.display(\'waldo-tag-14070\'); }); %3C/script%3E%3C/div%3E";
+						//$('#content p:nth-of-type(3)').after(unescape(videoad));
+										}
+					
+                    // Adjust ads for correct bottom positioning based on content size
+                    //window.setTimeout(function() {
+                    //    AdPositioning();
+                    //}, 3000);
+                  
+                  
+                    // set API resets after time-out (once content is properly loaded)
+                    window.setTimeout(function() {  
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);    
+                        
+                        var page_url = title == "" ? "http://www.learnopengl.com/" : "http://www.learnopengl.com/" + title;
+                        if(typeof DISQUS !== 'undefined') {                                              
+                            DISQUS.reset({
+                              reload: true,
+                              config: function () {  
+                                this.page.identifier = title;  
+                                this.page.url = page_url;
+                              }
+                            });
+                            $('#disqus_thread').show();
+                        }
+                           // Refresh callbacks on <function> tags
+                        SetFunctionTagCallbacks();        
+                    }, 1000);
+                                        
+                    // Zet ook de juiste button op 'selected'
+                    $('#nav li span, #nav li a').removeClass('selected');                
+                    if(title != '')
+                    {                    
+                        $('#nav li[id=\'' + title + '\']').children('span, a').addClass('selected');
+                    }
+                    // En open menu waar nodig
+                    var parents = $('#nav span.selected, #nav a.selected').parents('li').children('span.closed, a.closed');
+                    var index = 0;
+                    for(index = parents.length - 1; index >= 0; index--)
+                    {             
+                        
+                        var id = $(parents[index]).attr("id").replace( /^\D+/g, '');
+                        MenuClick(id, false);
+                    }                          
+                
+            }
+
+            // Set up Ezoic ads
+            ezstandalone.cmd.push(function () {
+                ezstandalone.showAds(103, 104, 106, 108, 111, 113 );
+            });
+
+            ezstandalone.cmd.push(function () { ezstandalone.showAds( 107, 110, 112 ); });
+            // Set up DISQUS
+            // $(document).ready(function() {
+            var disqus_shortname = 'learnopengl';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            // });
+        });
+
+    </script>
+</head>
+<body>
+<a href="https://learnopengl.com">
+<div id="header">
+</div>
+</a>
+
+<div id="supercontainer">
+    <!-- 728x90/320x50 -->
+    <div id="header_ad">
+	<div id="ezoic-pub-ad-placeholder-103"></div>    </div>
+    <div id="rightad_container">
+		<!--<div data-ea-publisher="learnopenglcom" data-ea-type="image" data-ea-style="stickybox"></div>-->
+        <div id="rightad">       
+			<div id="ezoic-pub-ad-placeholder-104"></div>        </div>
+        <div id="admessage">
+            If you're running AdBlock, please consider whitelisting this site if you'd like to support LearnOpenGL (it helps <strong>a lot</strong>); and no worries, I won't be mad if you don't :)
+        </div>
+		
+		<div id="rightonetenthad">
+             <div id="ezoic-pub-ad-placeholder-103"></div>
+        </div>
+        
+        <div id="rightthreetenthad">
+            <div id="ezoic-pub-ad-placeholder-106"></div>
+        </div>
+		
+		<div id="rightfifthtenthad">
+            <div id="ezoic-pub-ad-placeholder-107"></div>		</div>
+		
+		<div id="rightseventhtenthdad">
+            <div id="ezoic-pub-ad-placeholder-108"></div>
+        </div>
+
+        <div id="rightninthtenthdad">
+            		</div>
+		
+    </div>
+    <div id="container">
+        <div id="loading"></div>
+<script> 
+$(document).ready(function() {
+$('#menu-item4').mousedown(function() { MenuClick(4, true) });
+$('#menu-item48').mousedown(function() { MenuClick(48, true) });
+$('#menu-item56').mousedown(function() { MenuClick(56, true) });
+$('#menu-item63').mousedown(function() { MenuClick(63, true) });
+$('#menu-item100').mousedown(function() { MenuClick(100, true) });
+$('#menu-item102').mousedown(function() { MenuClick(102, true) });
+$('#menu-item113').mousedown(function() { MenuClick(113, true) });
+$('#menu-item116').mousedown(function() { MenuClick(116, true) });
+$('#menu-item78').mousedown(function() { MenuClick(78, true) });
+$('#menu-item81').mousedown(function() { MenuClick(81, true) });
+$('#menu-item85').mousedown(function() { MenuClick(85, true) });
+$('#menu-item125').mousedown(function() { MenuClick(125, true) });
+$('#menu-item128').mousedown(function() { MenuClick(128, true) });
+$('#menu-item129').mousedown(function() { MenuClick(129, true) });
+$('#menu-item133').mousedown(function() { MenuClick(133, true) });
+$('#menu-item134').mousedown(function() { MenuClick(134, true) });
+$('#menu-item138').mousedown(function() { MenuClick(138, true) });
+$('#menu-item142').mousedown(function() { MenuClick(142, true) });
+$('#menu-item143').mousedown(function() { MenuClick(143, true) });
+}); 
+</script>   
+    <div id="nav">
+         <div id="social">
+            <a href="https://github.com/JoeyDeVries/LearnOpenGL" target="_blank">
+                    <img src="/img/github.png" class="social_ico">
+            </a>
+            <a href="https://twitter.com/JoeyDeVriez" target="_blank">
+                <img src="/img/twitter.png" class="social_ico">
+            </a>
+          
+        </div>
+    <img src='img/nav-button_bottom-arrow.png' style='display: none'><ol><li id='Introduction'><a id="menu-item1" href="https://learnopengl.com/Introduction">Introduction </a></li><li id='Getting-started'><span id="menu-item4" class="closed">Getting started </span><ol id="menu-items-of4" style="display:none;"><li id='Getting-started/OpenGL'><a id="menu-item49" href="https://learnopengl.com/Getting-started/OpenGL">OpenGL </a></li><li id='Getting-started/Creating-a-window'><a id="menu-item5" href="https://learnopengl.com/Getting-started/Creating-a-window">Creating a window </a></li><li id='Getting-started/Hello-Window'><a id="menu-item6" href="https://learnopengl.com/Getting-started/Hello-Window">Hello Window </a></li><li id='Getting-started/Hello-Triangle'><a id="menu-item38" href="https://learnopengl.com/Getting-started/Hello-Triangle">Hello Triangle </a></li><li id='Getting-started/Shaders'><a id="menu-item39" href="https://learnopengl.com/Getting-started/Shaders">Shaders </a></li><li id='Getting-started/Textures'><a id="menu-item40" href="https://learnopengl.com/Getting-started/Textures">Textures </a></li><li id='Getting-started/Transformations'><a id="menu-item43" href="https://learnopengl.com/Getting-started/Transformations">Transformations </a></li><li id='Getting-started/Coordinate-Systems'><a id="menu-item44" href="https://learnopengl.com/Getting-started/Coordinate-Systems">Coordinate Systems </a></li><li id='Getting-started/Camera'><a id="menu-item47" href="https://learnopengl.com/Getting-started/Camera">Camera </a></li><li id='Getting-started/Review'><a id="menu-item50" href="https://learnopengl.com/Getting-started/Review">Review </a></li></ol></li><li id='Lighting'><span id="menu-item48" class="closed">Lighting </span><ol id="menu-items-of48" style="display:none;"><li id='Lighting/Colors'><a id="menu-item51" href="https://learnopengl.com/Lighting/Colors">Colors </a></li><li id='Lighting/Basic-Lighting'><a id="menu-item52" href="https://learnopengl.com/Lighting/Basic-Lighting">Basic Lighting </a></li><li id='Lighting/Materials'><a id="menu-item53" href="https://learnopengl.com/Lighting/Materials">Materials </a></li><li id='Lighting/Lighting-maps'><a id="menu-item54" href="https://learnopengl.com/Lighting/Lighting-maps">Lighting maps </a></li><li id='Lighting/Light-casters'><a id="menu-item55" href="https://learnopengl.com/Lighting/Light-casters">Light casters </a></li><li id='Lighting/Multiple-lights'><a id="menu-item58" href="https://learnopengl.com/Lighting/Multiple-lights">Multiple lights </a></li><li id='Lighting/Review'><a id="menu-item57" href="https://learnopengl.com/Lighting/Review">Review </a></li></ol></li><li id='Model-Loading'><span id="menu-item56" class="closed">Model Loading </span><ol id="menu-items-of56" style="display:none;"><li id='Model-Loading/Assimp'><a id="menu-item59" href="https://learnopengl.com/Model-Loading/Assimp">Assimp </a></li><li id='Model-Loading/Mesh'><a id="menu-item60" href="https://learnopengl.com/Model-Loading/Mesh">Mesh </a></li><li id='Model-Loading/Model'><a id="menu-item61" href="https://learnopengl.com/Model-Loading/Model">Model </a></li></ol></li><li id='Advanced-OpenGL'><span id="menu-item63" class="closed">Advanced OpenGL </span><ol id="menu-items-of63" style="display:none;"><li id='Advanced-OpenGL/Depth-testing'><a id="menu-item72" href="https://learnopengl.com/Advanced-OpenGL/Depth-testing">Depth testing </a></li><li id='Advanced-OpenGL/Stencil-testing'><a id="menu-item73" href="https://learnopengl.com/Advanced-OpenGL/Stencil-testing">Stencil testing </a></li><li id='Advanced-OpenGL/Blending'><a id="menu-item74" href="https://learnopengl.com/Advanced-OpenGL/Blending">Blending </a></li><li id='Advanced-OpenGL/Face-culling'><a id="menu-item77" href="https://learnopengl.com/Advanced-OpenGL/Face-culling">Face culling </a></li><li id='Advanced-OpenGL/Framebuffers'><a id="menu-item65" href="https://learnopengl.com/Advanced-OpenGL/Framebuffers">Framebuffers </a></li><li id='Advanced-OpenGL/Cubemaps'><a id="menu-item66" href="https://learnopengl.com/Advanced-OpenGL/Cubemaps">Cubemaps </a></li><li id='Advanced-OpenGL/Advanced-Data'><a id="menu-item69" href="https://learnopengl.com/Advanced-OpenGL/Advanced-Data">Advanced Data </a></li><li id='Advanced-OpenGL/Advanced-GLSL'><a id="menu-item67" href="https://learnopengl.com/Advanced-OpenGL/Advanced-GLSL">Advanced GLSL </a></li><li id='Advanced-OpenGL/Geometry-Shader'><a id="menu-item68" href="https://learnopengl.com/Advanced-OpenGL/Geometry-Shader">Geometry Shader </a></li><li id='Advanced-OpenGL/Instancing'><a id="menu-item70" href="https://learnopengl.com/Advanced-OpenGL/Instancing">Instancing </a></li><li id='Advanced-OpenGL/Anti-Aliasing'><a id="menu-item75" href="https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing">Anti Aliasing </a></li></ol></li><li id='Advanced-Lighting'><span id="menu-item100" class="closed">Advanced Lighting </span><ol id="menu-items-of100" style="display:none;"><li id='Advanced-Lighting/Advanced-Lighting'><a id="menu-item101" href="https://learnopengl.com/Advanced-Lighting/Advanced-Lighting">Advanced Lighting </a></li><li id='Advanced-Lighting/Gamma-Correction'><a id="menu-item110" href="https://learnopengl.com/Advanced-Lighting/Gamma-Correction">Gamma Correction </a></li><li id='Advanced-Lighting/Shadows'><span id="menu-item102" class="closed">Shadows </span><ol id="menu-items-of102" style="display:none;"><li id='Advanced-Lighting/Shadows/Shadow-Mapping'><a id="menu-item103" href="https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping">Shadow Mapping </a></li><li id='Advanced-Lighting/Shadows/Point-Shadows'><a id="menu-item104" href="https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows">Point Shadows </a></li></ol></li><li id='Advanced-Lighting/Normal-Mapping'><a id="menu-item106" href="https://learnopengl.com/Advanced-Lighting/Normal-Mapping">Normal Mapping </a></li><li id='Advanced-Lighting/Parallax-Mapping'><a id="menu-item107" href="https://learnopengl.com/Advanced-Lighting/Parallax-Mapping">Parallax Mapping </a></li><li id='Advanced-Lighting/HDR'><a id="menu-item111" href="https://learnopengl.com/Advanced-Lighting/HDR">HDR </a></li><li id='Advanced-Lighting/Bloom'><a id="menu-item112" href="https://learnopengl.com/Advanced-Lighting/Bloom">Bloom </a></li><li id='Advanced-Lighting/Deferred-Shading'><a id="menu-item108" href="https://learnopengl.com/Advanced-Lighting/Deferred-Shading">Deferred Shading </a></li><li id='Advanced-Lighting/SSAO'><a id="menu-item109" href="https://learnopengl.com/Advanced-Lighting/SSAO">SSAO </a></li></ol></li><li id='PBR'><span id="menu-item113" class="closed">PBR </span><ol id="menu-items-of113" style="display:none;"><li id='PBR/Theory'><a id="menu-item114" href="https://learnopengl.com/PBR/Theory">Theory </a></li><li id='PBR/Lighting'><a id="menu-item115" href="https://learnopengl.com/PBR/Lighting">Lighting </a></li><li id='PBR/IBL'><span id="menu-item116" class="closed">IBL </span><ol id="menu-items-of116" style="display:none;"><li id='PBR/IBL/Diffuse-irradiance'><a id="menu-item117" href="https://learnopengl.com/PBR/IBL/Diffuse-irradiance">Diffuse irradiance </a></li><li id='PBR/IBL/Specular-IBL'><a id="menu-item118" href="https://learnopengl.com/PBR/IBL/Specular-IBL">Specular IBL </a></li></ol></li></ol></li><li id='In-Practice'><span id="menu-item78" class="closed">In Practice </span><ol id="menu-items-of78" style="display:none;"><li id='In-Practice/Debugging'><a id="menu-item79" href="https://learnopengl.com/In-Practice/Debugging">Debugging </a></li><li id='In-Practice/Text-Rendering'><a id="menu-item80" href="https://learnopengl.com/In-Practice/Text-Rendering">Text Rendering </a></li><li id='In-Practice/2D-Game'><span id="menu-item81" class="closed">2D Game </span><ol id="menu-items-of81" style="display:none;"><li id='In-Practice/2D-Game/Breakout'><a id="menu-item82" href="https://learnopengl.com/In-Practice/2D-Game/Breakout">Breakout </a></li><li id='In-Practice/2D-Game/Setting-up'><a id="menu-item88" href="https://learnopengl.com/In-Practice/2D-Game/Setting-up">Setting up </a></li><li id='In-Practice/2D-Game/Rendering-Sprites'><a id="menu-item83" href="https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites">Rendering Sprites </a></li><li id='In-Practice/2D-Game/Levels'><a id="menu-item84" href="https://learnopengl.com/In-Practice/2D-Game/Levels">Levels </a></li><li id='In-Practice/2D-Game/Collisions'><span id="menu-item85" class="closed">Collisions </span><ol id="menu-items-of85" style="display:none;"><li id='In-Practice/2D-Game/Collisions/Ball'><a id="menu-item95" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Ball">Ball </a></li><li id='In-Practice/2D-Game/Collisions/Collision-detection'><a id="menu-item96" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-detection">Collision detection </a></li><li id='In-Practice/2D-Game/Collisions/Collision-resolution'><a id="menu-item97" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-resolution">Collision resolution </a></li></ol></li><li id='In-Practice/2D-Game/Particles'><a id="menu-item89" href="https://learnopengl.com/In-Practice/2D-Game/Particles">Particles </a></li><li id='In-Practice/2D-Game/Postprocessing'><a id="menu-item90" href="https://learnopengl.com/In-Practice/2D-Game/Postprocessing">Postprocessing </a></li><li id='In-Practice/2D-Game/Powerups'><a id="menu-item91" href="https://learnopengl.com/In-Practice/2D-Game/Powerups">Powerups </a></li><li id='In-Practice/2D-Game/Audio'><a id="menu-item94" href="https://learnopengl.com/In-Practice/2D-Game/Audio">Audio </a></li><li id='In-Practice/2D-Game/Render-text'><a id="menu-item92" href="https://learnopengl.com/In-Practice/2D-Game/Render-text">Render text </a></li><li id='In-Practice/2D-Game/Final-thoughts'><a id="menu-item93" href="https://learnopengl.com/In-Practice/2D-Game/Final-thoughts">Final thoughts </a></li></ol></li></ol></li><li id='Guest-Articles'><span id="menu-item125" class="closed">Guest Articles </span><ol id="menu-items-of125" style="display:none;"><li id='Guest-Articles/How-to-publish'><a id="menu-item126" href="https://learnopengl.com/Guest-Articles/How-to-publish">How to publish </a></li><li id='Guest-Articles/2020'><span id="menu-item128" class="closed">2020 </span><ol id="menu-items-of128" style="display:none;"><li id='Guest-Articles/2020/OIT'><span id="menu-item129" class="closed">OIT </span><ol id="menu-items-of129" style="display:none;"><li id='Guest-Articles/2020/OIT/Introduction'><a id="menu-item130" href="https://learnopengl.com/Guest-Articles/2020/OIT/Introduction">Introduction </a></li><li id='Guest-Articles/2020/OIT/Weighted-Blended'><a id="menu-item132" href="https://learnopengl.com/Guest-Articles/2020/OIT/Weighted-Blended">Weighted Blended </a></li></ol></li><li id='Guest-Articles/2020/Skeletal-Animation'><a id="menu-item131" href="https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation">Skeletal Animation </a></li></ol></li><li id='Guest-Articles/2021'><span id="menu-item133" class="closed">2021 </span><ol id="menu-items-of133" style="display:none;"><li id='Guest-Articles/2021/CSM'><a id="menu-item137" href="https://learnopengl.com/Guest-Articles/2021/CSM">CSM </a></li><li id='Guest-Articles/2021/Scene'><span id="menu-item134" class="closed">Scene </span><ol id="menu-items-of134" style="display:none;"><li id='Guest-Articles/2021/Scene/Scene-Graph'><a id="menu-item135" href="https://learnopengl.com/Guest-Articles/2021/Scene/Scene-Graph">Scene Graph </a></li><li id='Guest-Articles/2021/Scene/Frustum-Culling'><a id="menu-item136" href="https://learnopengl.com/Guest-Articles/2021/Scene/Frustum-Culling">Frustum Culling </a></li></ol></li><li id='Guest-Articles/2021/Tessellation'><span id="menu-item138" class="closed">Tessellation </span><ol id="menu-items-of138" style="display:none;"><li id='Guest-Articles/2021/Tessellation/Height-map'><a id="menu-item139" href="https://learnopengl.com/Guest-Articles/2021/Tessellation/Height-map">Height map </a></li><li id='Guest-Articles/2021/Tessellation/Tessellation'><a id="menu-item140" href="https://learnopengl.com/Guest-Articles/2021/Tessellation/Tessellation">Tessellation </a></li></ol></li><li id='Guest-Articles/2021/DSA'><a id="menu-item141" href="https://learnopengl.com/Guest-Articles/2021/DSA">DSA </a></li></ol></li><li id='Guest-Articles/2022'><span id="menu-item142" class="closed">2022 </span><ol id="menu-items-of142" style="display:none;"><li id='Guest-Articles/2022/Compute-Shaders'><span id="menu-item143" class="closed">Compute Shaders </span><ol id="menu-items-of143" style="display:none;"><li id='Guest-Articles/2022/Compute-Shaders/Introduction'><a id="menu-item144" href="https://learnopengl.com/Guest-Articles/2022/Compute-Shaders/Introduction">Introduction </a></li></ol></li><li id='Guest-Articles/2022/Phys.-Based-Bloom'><a id="menu-item145" href="https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom">Phys. Based Bloom </a></li><li id='Guest-Articles/2022/Area-Lights'><a id="menu-item146" href="https://learnopengl.com/Guest-Articles/2022/Area-Lights">Area Lights </a></li></ol></li></ol></li><li id='Code-repository'><a id="menu-item99" href="https://learnopengl.com/Code-repository">Code repository </a></li><li id='Translations'><a id="menu-item119" href="https://learnopengl.com/Translations">Translations </a></li><li id='Privacy'><a id="menu-item147" href="https://learnopengl.com/Privacy">Privacy </a></li><li id='About'><a id="menu-item2" href="https://learnopengl.com/About">About </a></li></ol>		<div id="menu_book">
+            <a href="https://geni.us/learnopengl" target="_blank"><img src="/book/below_menu.png" class="clean"/></a>
+        </div>
+       <div id="donate">
+            <a href="https://www.paypal.me/learnopengl/" target="_blank">
+                <div id="donate_img"></div>
+                <img style="display: none" src="/img/donate_button_hover.png"/>
+            </a>
+        </div>       
+		
+		<div id="lefttwotenthad">
+            		</div>
+		
+        <div id="leftfourthtenthad">
+            <div id="ezoic-pub-ad-placeholder-111"></div>
+        </div>
+		
+		<div id="leftsixthtenthad">
+            <div id="ezoic-pub-ad-placeholder-112"></div>		</div>
+		
+        <div id="lefteighttenthad">
+            <div id="ezoic-pub-ad-placeholder-113"></div>
+        </div>
+
+        <div id="lefttenthtenthad">
+                    </div>
+    </div>
+    
+    <div id="content">
+    <h1 id="content-title">Tessellation</h1>
+<h1 id="content-url" style='display:none;'>Guest-Articles/2021/Tessellation/Tessellation</h1>
+<style layout="text/css">
+  #content-title {
+  	display: none;
+  }
+</style>
+<h1>Tessellation Chapter II: Rendering Terrain using Tessellation Shaders &amp; Dynamic Levels of Detail</h1>
+
+	<warning>In order to complete this chapter, you will need to be able to create an OpenGL 4.0+ context.  This should not be a technical
+		concern as Windows and Linux support OpenGL 4.6 and OS X only supports OpenGL 4.1.  The Tessellation Shaders to be discussed are only available
+		starting in OpenGL 4.0.  Using OpenGL 3.3 or earlier will result in errors.  The sample shader code will user OpenGL 4.1 for cross-platform 
+		compatibility between OS X, Windows, and Linux.
+	</warning>
+
+	<p>
+		In the <a href="https://learnopengl.com/Guest-Articles/2021/Tessellation/Height-map">previous chapter</a>, we implemented a terrain height map on the CPU and it worked but
+		it had its deficiencies:
+	</p>
+
+	<ul>
+		<li>The mesh generation is time intensive ( O(<code>n<sup>2</sup></code>).</li>
+      <li>The mesh storage is memory intensive to store the vertices and indices<br/>
+			( <code>width * height * 3 * sizeof(float) + width * (height+1) * sizeof(unsigned int)</code> - almost 72MB
+			in our example).</li>
+		<li>The mesh has a fixed uniform resolution (<code>width * height</code> vertices and
+			<code>(height-1) * (width*2)</code> triangles - 4,607,744 vertices and 9,206,730 triangles in our example).</li>
+		<li>The Vertex Shader needs to process a minimum of <code>width * height</code> vertices.</li>
+		<li>To draw the entire mesh, we need to have <code>height - 1</code> draw calls.</li>
+	</ul>
+
+	<p>
+		In this chapter we'll offload the work to the GPU making use of tessellation
+		shaders to improve the performance and memory footprint.  We will render the corresponding terrain using a new method:
+	</p>
+
+	<ul>
+		<li>Dynamically subdividing a low resolution mesh on the GPU</li>
+	</ul>
+
+	<p>
+		This method will give us comparable results, greater control &amp; flexibility, and better performance.
+		In this chapter, we will expand our existing OpenGL Rendering Pipeline and introduce two new programmable
+		shaders.
+	</p>
+
+	<p>
+		This chapter is organized in to the following sections:
+	</p>
+
+	<ol>
+		<li>CPU / OpenGL Setup</li>
+		<li>GPU Implementation using Tessellation Shaders
+			<ul>
+				<li>Expanded Rendering Pipeline</li>
+				<li>Tessellation Control Shader</li>
+				<li>Tessellation Primitive Generation</li>
+				<li>Tessellation Evaluation Shader</li>
+			</ul>
+		</li>
+		<li>Dynamic Level of Detail</li>
+		<li>Exercises</li>
+		<li>References</li>
+	</ol>
+
+	<h3 id="cpusetup">CPU / OpenGL Setup</h3>
+
+	<p>
+		The first step is to specify the number of vertices that make up each of our primitives.  When dealing with tessellation, our new primitive type 
+		is a patch denoted by the constant <def>GL_PATCHES</def>.  A patch is an abstract primitive that is comprised of a set of <code>n</code> vertices that will be interpolated between.  
+		The number of vertices per patch is specified CPU side via the OpenGL command below:
+	</p>
+
+	<pre><code>glPatchParameteri(GL_PATCH_VERTICES, 4);</code></pre>
+
+	<p>
+		Here we are specifying that each set of four verticies refer to a single patch (which matches our quad subdivision previously).  Depending on your
+		interpolation calculation, the number of vertices may vary.  In the next chapter, we'll see an instance where we'll have more verticies used.
+	</p>
+
+	<p>
+		We'll set up our VBO as the set of vertices that represent our quad.  We will do a course subdivision of our terrain.  Here, <code>width</code> and <code>height</code> correspond
+		to the size of the height map image we read in.  The <code>rez</code> is the number of patches across and down our terrain.  Therefore, we'll be generating <code>rez<sup>2</sup></code>
+		patches, each to be individually tessellated.  Each vertex of our quad has an (x,y,z) location in space and a (u,v) texture coordinate.  The locations span through the X range of
+		<code>[-width/2, width/2]</code> and Z range of <code>[-height/2, height/2</code>.  Y is set to be zero and will be modified by the height map in our shaders.  The texture coordinates
+		span <code>[0, 1]</code> to correspond to each resolution block of the texture.
+	</p>
+
+	<pre><code>// vertex generation
+std::vector&lt;float&gt; vertices;
+
+unsigned rez = 20;
+for(unsigned i = 0; i &lt;= rez-1; i++)
+{
+	for(unsigned j = 0; j &lt;= rez-1; j++)
+	{
+		vertices.push_back(-width/2.0f + width*i/(float)rez); // v.x
+		vertices.push_back(0.0f); // v.y
+		vertices.push_back(-height/2.0f + height*j/(float)rez); // v.z
+		vertices.push_back(i / (float)rez); // u
+		vertices.push_back(j / (float)rez); // v
+
+		vertices.push_back(-width/2.0f + width*(i+1)/(float)rez); // v.x
+		vertices.push_back(0.0f); // v.y
+		vertices.push_back(-height/2.0f + height*j/(float)rez); // v.z
+		vertices.push_back((i+1) / (float)rez); // u
+		vertices.push_back(j / (float)rez); // v
+
+		vertices.push_back(-width/2.0f + width*i/(float)rez); // v.x
+		vertices.push_back(0.0f); // v.y
+		vertices.push_back(-height/2.0f + height*(j+1)/(float)rez); // v.z
+		vertices.push_back(i / (float)rez); // u
+		vertices.push_back((j+1) / (float)rez); // v
+
+		vertices.push_back(-width/2.0f + width*(i+1)/(float)rez); // v.x
+		vertices.push_back(0.0f); // v.y
+		vertices.push_back(-height/2.0f + height*(j+1)/(float)rez); // v.z
+		vertices.push_back((i+1) / (float)rez); // u
+		vertices.push_back((j+1) / (float)rez); // v
+	}
+}</code></pre>
+
+	<p>
+		We'll send the <code>vertices</code> vector to a VBO.  When it comes time to actually render and draw the patch, we'll use the same draw command we're accustomed to
+		but using the primtive type <code>GL_PATCHES</code>.
+	</p>
+
+	<pre><code><function id='27'>glBindVertexArray</function>(terrainVAO);
+<function id='1'>glDrawArrays</function>(GL_PATCHES, 0, 4*rez*rez);</code></pre>
+
+	<p>
+		That is the extent of what's done on the CPU and via OpenGL.  We specify the vertices per patch and will leave the subdivision of each patch to the GPU and our
+		tessellation shaders.
+	</p>
+
+	<h2 id="gpu">GPU Implementation using Tessellation Shaders</h2>
+
+	<p>
+		The previous chapter performed the quad subdivision once on the CPU and then sent the precomputed results to the GPU to render.  We will now move the quad subdivision
+		to the GPU.  The quad subdivision, or tessellation of the quad, is broken in to three steps:
+	</p>
+
+	<ol>
+		<li>Determine how much tessellation to do</li>
+		<li>Perform the tessellation to generate intermediate points</li>
+		<li>Evaluate the intermediate point to generate a new vertex point</li>
+	</ol>
+
+	<p>
+		Each of those three steps will correspond to each of the new stages in our rendering pipeline.
+	</p>
+
+	<h3 id="pipe">Expanded Rendering Pipeline</h3>
+
+	<p>
+		The <a href="https://learnopengl.com/Advanced-OpenGL/Geometry-Shader">Geometry Shader</a> sits after the Vertex Shader and before the clipping &amp; culling
+		stage of the pipeline.  However, between the Vertex and Geometry Shaders are two more optional shaders called the <def>Tessellation Control Shader</def>
+		and the <def>Tessellation Evaluation Shader</def>.
+	</p>
+
+	<p>
+		The image below displays a simplified OpenGL Rendering Pipeline.  The boxes name each stage in the pipeline and the clouds name the input/output objects for each stage.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/opengl_4_0_pipeline.png" width="600"
+		 alt="OpenGL 4.0 Rendering Pipeline" title="OpenGL 4.0 Rendering Pipeline" class="clean">
+
+	<warning>The Tessellation Evaluation Shader is required for the tessellation process to be computed.  If the
+	Tessellation Control Shader is omitted then the output of the Vertex Shader is sent directly to the Tessellation
+	Primitive Generator.</warning>
+
+	<p>
+		The new stages we have added, and their responsibilites, are:
+	</p>
+
+	<ol>
+		<li><def>Tessellation Control Shader</def> - Determine how much tessellation to do</li>
+		<li><def>Tessellation Primitive Generator</def> - Perform the tessellation to generate intermediate points</li>
+		<li><def>Tessellation Evaluation Shader</def> - Evaluate the intermediate point to generate a new vertex point</li>
+	</ol>
+
+	<p>
+		As we walk through the tessellation process, we will start the shader program with a simple pass-through vertex shader, shown below.
+	</p>
+
+	<pre><code id="tcs_code">// vertex shader
+#version 410 core
+
+// vertex position
+layout (location = 0) in vec3 aPos;
+// texture coordinate
+layout (location = 1) in vec2 aTex;
+
+out vec2 TexCoord;
+
+void main()
+{
+    // convert XYZ vertex to XYZW homogeneous coordinate
+    gl_Position = vec4(aPos, 1.0);
+    // pass texture coordinate though
+    TexCoord = aTex;
+}
+	</code></pre>
+
+	<h3 id="tcs">Tessellation Control Shader (TCS)</h3>
+
+	<p>
+		The main task of the control shader, as stated above, is to determine how much tessellation to do.  How that is done specifically is 
+		a multistep process.  The three steps are the following:
+	</p>
+
+	<ol>
+		<li>Specify the number of vertices per patch</li>
+		<li>Perform any transformations to each vertex of the patch</li>
+		<li>Specify the tessellation levels to perform - which controls how much tessellation to do</li>
+	</ol>
+
+	<p>
+		When specifying the number of vertices per patch, this value needs to match the number specified on the CPU.  This is accomplished via a output layout parameter.
+	</p>
+
+	<pre><code>layout (vertices=4) out;</code></pre>
+
+	<p>
+		The tessellation control shader will be run on each vertex that is part of the patch.  The shader receives its inputs as an array whose size equals the number of vertices 
+		in the patch.  The built-in GLSL variable <def>gl_InvocationID</def> tracks which vertex of the patch we are currently processing.  We'll use this value to access the proper
+		element within the array.  Any varyings we are using will also be arrays, both as input and output:
+	</p>
+
+	<pre><code>// varying input from vertex shader
+in vec2 TexCoord[];
+// varying output to evaluation shader
+out vec2 TextureCoord[];</code></pre>
+
+	<p>
+		The vertex positional data gets sent through the built-in GLSL variables <def>gl_in</def> and <def>gl_out</def> which are both arrays of the following struct type:
+	</p>
+
+	<pre><code>in gl_PerVertex
+{
+	vec4 gl_Position;
+	float gl_PointSize;
+	float gl_ClipDistance[];
+} gl_in[gl_MaxPatchVertices];</code></pre>
+
+	<p>
+		With all the inputs and outputs set up properly, we're ready to pass through all of the vertex attribute data.
+	</p>
+
+	<pre><code>gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+TextureCoord[gl_InvocationID] = TexCoord[gl_InvocationID];</code></pre>
+
+	<p>
+		Now that we've specified the patch data, the final step is to actually specify how much tessellation to do.  How the tessellation is performed exactly will be described 
+		below in the next section.  Each edge of our quad can be subdivided independently.  Therefore, there are four different edge values we can set as specified by the built-in 
+		GLSL array <def>gl_TessLevelOuter</def>.  Additionally, the patch can be internally tessellated along each dimension.  There are two dimensions we can set as specified by
+		the built-in GLSL array <def>gl_TessLevelInner</def>.  The image below shows the correspondance of each element in the array to the associated quad edge.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/QuadLevels.png" width="600"
+		 alt="Quad Tessellation Levels" title="Quad Tessellation Levels" class="clean">
+	<caption>Image Source: <a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">OpenGL Wiki</a></caption>
+
+	<p>
+		We will set each element within the two arrays to the number of subdivisions to perform.  These are float values and how these values get used will be explained below when 
+		the tessellation algorithm is explained.  Initially, we will hardcode all the values to be 16.  This will be result in 16<sup>2</sup> tessellated points to be generated.
+	</p>
+
+	<pre><code>gl_TessLevelOuter[0] = 16;
+gl_TessLevelOuter[1] = 16;
+gl_TessLevelOuter[2] = 16;
+gl_TessLevelOuter[3] = 16;
+
+gl_TessLevelInner[0] = 16;
+gl_TessLevelInner[1] = 16;</code></pre>
+
+	<p>
+		The full tessellation control shader code looks as follows:
+	</p>
+
+	<pre><code id="tcs_code">// tessellation control shader
+#version 410 core
+
+// specify number of control points per patch output
+// this value controls the size of the input and output arrays
+layout (vertices=4) out;
+
+// varying input from vertex shader
+in vec2 TexCoord[];
+// varying output to evaluation shader
+out vec2 TextureCoord[];
+
+void main()
+{
+    // ----------------------------------------------------------------------
+    // pass attributes through
+    gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+    TextureCoord[gl_InvocationID] = TexCoord[gl_InvocationID];
+
+    // ----------------------------------------------------------------------
+    // invocation zero controls tessellation levels for the entire patch
+    if (gl_InvocationID == 0)
+    {
+        gl_TessLevelOuter[0] = 16;
+        gl_TessLevelOuter[1] = 16;
+        gl_TessLevelOuter[2] = 16;
+        gl_TessLevelOuter[3] = 16;
+
+        gl_TessLevelInner[0] = 16;
+        gl_TessLevelInner[1] = 16;
+    }
+}
+	</code></pre>
+
+	<h3 id="tpg">Tessellation Primitive Generation</h3>
+
+	<p>
+		The Tessellation Primitive Generator is responsible for doing the actual tessellation of the patch and generating each intermediate point.
+		There is no specific shader code written for the Tessellation Primitive Generator.  However, it uses the output of the tessellation control shader and 
+		the input of the tessellation evaluation shader to dictate how the generation is performed.  The tessellation control shader output the tessellation 
+		levels, or number of times to subdivide each edge.  The tessellation evaluation shader's input then specifies how to space the subdivisions on each edge.
+		There are three options for how to specify the subdivision spacing:
+	</p>
+
+	<ol>
+		<li><code>equal_spacing</code> - creates subdivisions of equal sizes</li>
+		<li><code>fractional_odd_spacing</code> - creates an odd number of subdivisions broken into long &amp; short segments</li>
+		<li><code>fractional_even_spacing</code> - creates an even number of subdivisions broken into long &amp; short segments</li>
+	</ol>
+
+	<p><div id="in_content_ad_2">
+				<!-- 728x90/300x250/320x50 --><div id="waldo-tag-15502"></div>
+				</div><p>
+		A visual of each option is shown below.  For more details and specifics, jump over to the 
+		<a href="https://www.khronos.org/opengl/wiki/Tessellation#Edge_tessellation_spacing" target="_blank">OpenGL Wiki</a> page.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/SubdivideEqual.gif" width="200"
+		 alt="Subdivide Equal" title="Subdivide Equal" class="clean">
+	<caption>Equal Subdivision (Image Source: <a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">OpenGL Wiki</a>)</caption>
+	<img src="/img/guest/2021/tessellation/tessellation/SubdivideOdd.gif" width="200"
+		 alt="Subdivide Fractional Odd" title="Subdivide Fractional Odd" class="clean">
+	<caption>Fractional Odd Subdivision (Image Source: <a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">OpenGL Wiki</a>)</caption>
+	<img src="/img/guest/2021/tessellation/tessellation/SubdivideEven.gif" width="200"
+		 alt="Subdivide Fractional Even" title="Subdivide Fractional Even" class="clean">
+	<caption>Fractional Even Subdivision (Image Source: <a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">OpenGL Wiki</a>)</caption>
+
+	<p>
+		The tessellation is performed in a two-step process - first the inner patch is recursively tessellated and then the outer edges are subdivided.  The image below shows 
+		different tessellations that would result based on different values of the inner tessellation levels.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/QuadInnerOnlyLineCorr.png" width="600"
+		 alt="Inner Tessellation" title="Inner Tessellation" class="clean">
+	<caption>Image Source: <a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">OpenGL Wiki</a></caption>
+
+	<p>
+		Once the inner rings have been generated, the outer ring was its final intermediate points generated based on each outer tessellation level.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/QuadOuterAndNotris.png" width="200"
+		 alt="Inner Tessellation" title="Inner Tessellation" class="clean">
+	<caption>Image Source: <a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">OpenGL Wiki</a></caption>
+
+	<p>
+		The abstract patch space spans its dimensions within the range <code>[0, 1]</code>.  Each intermediate point is represented by a fractional coordinate <code>(u, v)</code>
+		that corresponds to its location within the patch.  The tessellation evaluation shader will then be run on every generated intermediate point.
+	</p>
+
+	<h3 id="tes">Tessellation Evaluation Shader</h3>
+
+	<p>
+		The Tessellation Evaluation Shader has a relatively simple job after the above steps have been completed - to specify the <code>(x, y, z)</code>location of the 
+		generated intermediate point.  The presence of the tessellation evaluation shader in the pipeline is what triggers the tessellation primitive generation.  Therefore,
+		the inputs for the tessellation primitive generator are placed in the tessellation evaluation shader as input layout paramaters.  We will need to specify the 
+		abstract patch type and can optionally specify the spacing and winding order for the generated primitives.  Our patch is representing a quad to be subdivided, so 
+		the patch type will be <def>quads</def> (other options include <code>triangles</code> and <code>isolines</code>).  The spacing options were outlined above and 
+		the winding order can be either <def>ccw</def> or <def>cw</def>, with <code>ccw</code>
+		being the default.
+	</p>
+	
+	<pre><code>layout (quads, fractional_odd_spacing, ccw) in;</code></pre>
+
+	<p>
+		The tessellation evaluation shader receives the following inputs:
+	</p>
+
+	<ul>
+		<li>the array of patch vertices, again through the built-in <code>gl_in</code></li>
+		<li>the array of varying attributes</li>
+		<li>the 2D tessellation coordinate for the generated point through the built-in <def>gl_TessCoord</def></li>
+	</ul>
+
+	<p>
+		We then use the <code>gl_TessCoord</code> values as the parameters to interpolate the patch vertices as desired.  Here, we will apply the same quad subdivision as 
+		we did CPU side in the previous chapter.  The difference being that we are now determining the interpolated texture coordinate and final vertex position within the GPU 
+		in parallel, opposed to on the CPU in sequence.  The process is also simplified since our code is performing only a single interpolation opposed to having to generate 
+		the fractional interpolation parameters and do the interpolation.  We have now offloaded the generation of the interpolation parameters to the tessellation primitive 
+		generator.
+	</p>
+
+	<p>
+		The full tessellation evaluation shader is displayed below with equivalent steps from the CPU tessellation subdivision.
+	</p>
+
+	<pre><code id="tes_code">// tessellation evaluation shader
+#version 410 core
+
+layout (quads, fractional_odd_spacing, ccw) in;
+
+uniform sampler2D heightMap;  // the texture corresponding to our height map
+uniform mat4 model;           // the model matrix
+uniform mat4 view;            // the view matrix
+uniform mat4 projection;      // the projection matrix
+
+// received from Tessellation Control Shader - all texture coordinates for the patch vertices
+in vec2 TextureCoord[];
+
+// send to Fragment Shader for coloring
+out float Height;
+
+void main()
+{
+    // get patch coordinate
+    float u = gl_TessCoord.x;
+    float v = gl_TessCoord.y;
+
+    // ----------------------------------------------------------------------
+    // retrieve control point texture coordinates
+    vec2 t00 = TextureCoord[0];
+    vec2 t01 = TextureCoord[1];
+    vec2 t10 = TextureCoord[2];
+    vec2 t11 = TextureCoord[3];
+
+    // bilinearly interpolate texture coordinate across patch
+    vec2 t0 = (t01 - t00) * u + t00;
+    vec2 t1 = (t11 - t10) * u + t10;
+    vec2 texCoord = (t1 - t0) * v + t0;
+
+    // lookup texel at patch coordinate for height and scale + shift as desired
+    Height = texture(heightMap, texCoord).y * 64.0 - 16.0;
+
+    // ----------------------------------------------------------------------
+    // retrieve control point position coordinates
+    vec4 p00 = gl_in[0].gl_Position;
+    vec4 p01 = gl_in[1].gl_Position;
+    vec4 p10 = gl_in[2].gl_Position;
+    vec4 p11 = gl_in[3].gl_Position;
+
+    // compute patch surface normal
+    vec4 uVec = p01 - p00;
+    vec4 vVec = p10 - p00;
+    vec4 normal = normalize( vec4(cross(vVec.xyz, uVec.xyz), 0) );
+
+    // bilinearly interpolate position coordinate across patch
+    vec4 p0 = (p01 - p00) * u + p00;
+    vec4 p1 = (p11 - p10) * u + p10;
+    vec4 p = (p1 - p0) * v + p0;
+
+    // displace point along normal
+    p += normal * Height;
+
+    // ----------------------------------------------------------------------
+    // output patch point position in clip space
+    gl_Position = projection * view * model * p;
+}
+	</code></pre>
+
+	<p>
+		The <code>Height</code> value is then used in the fragment shader to apply a grayscale color based on the
+		relative height.  A sample fragment shader used is below:
+	</p>
+
+	<pre><code>#version 410 core
+
+in float Height;
+
+out vec4 FragColor;
+
+void main()
+{
+	float h = (Height + 16)/64.0f;
+	FragColor = vec4(h, h, h, 1.0);
+}</code></pre>
+
+	<p>
+		The result is shown below:
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/gpu_overworld.png" width="600"
+		 alt="GPU Terrain Overworld" title="GPU Terrain Overworld" class="clean">
+
+	<p>
+		When we view the wireframe of the full terrain, we can see the tessellation of each patch.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/gpu_wireframe.png" width="600"
+		 alt="GPU Terrain Overworld Wireframe" title="GPU Terrain Overworld Wireframe" class="clean">
+
+	<p>
+		If we outline each patch, we have a visual of the course resolution of our patch array:
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/gpu_overworld_patch_outline.png" width="600"
+		 alt="GPU Terrain Overworld with Patch Outlines" title="GPU Terrain Overworld with Patch Outlines" class="clean">
+
+	<p>
+		And the tessellation patch by patch:
+	</p>		 
+	
+	<img src="/img/guest/2021/tessellation/tessellation/gpu_wireframe_patch_outline.png" width="600"
+		 alt="GPU Terrain Overworld Wireframe with Patch Outlines" title="GPU Terrain Overworld Wireframe with Patch Outlines" class="clean">
+
+	<h2 id="lod">Dynamic Level of Detail</h2>
+
+	<p>
+		In the above TCS code we are hard coding every patch to use tessellation levels of
+		16 uniformly across all patches.  This effectively is the same as we had done on the CPU - pick a fixed resolution and render it.  We do 
+		get the memory and performance boosts from running in parallel on the GPU.  The benefit and power of tessellation shaders is to dynamically
+		calculate the resolution of the subdivision to produce the desired geometry.  We will walk through a distanced-based model to compute the 
+		tessellation levels.  Due to our perspective projection, we need a high level of detail for meshes that are near the camera and can use a
+		lower level of detail for meshes that are far away from the camera.
+	</p>
+
+	<p>
+		The Tessellation Control Shader controls the tessellation level of the patch so we must have it present in our shader program to accomplish 
+		this task.  We only need to perform these calculations once per patch since the 0<sup>th</sup>-indexed vertex sets the tessellation 
+		levels for the entire patch.  We'll linearly interpolate the tessellation levels based the depth of the patch.  This process is accomplished 
+		in six steps: 
+	</p>
+
+	<ol>
+		<li><strong>Define parameters</strong>: We'll be interpolating between a range of tessellation levels and need to define a 
+			<def>MIN_TESS_LEVEL</def> and <def>MAX_TESS_LEVEL</def>.  Additionally, the distance is used as the interpolation parameter 
+			and we'll define a <def>MIN_DISTANCE</def> and <def>MAX_DISTANCE</def> to clamp the patch distance within.  These distance 
+          parameters are also used in the third step to normalize the patch distance.<br/><br/></li>
+		<li><strong>Transform patch vertices to eye space</strong>: By transforming our patch vertices in to eye space, the z-component of
+			the coordinate corresponds to the distance to the camera.  This distance is in world space scale just relative to the camera.<br/><br/></li>
+		<li><strong>Compute normalized distance to camera</strong>: By normalizing the distance to the camera, we're computing how far 
+			this vertex's distance lies between our distance range.  This percentage is then used in the next step to compute the same
+			relative distance between the tessellation levels.  After this normalization is completed, the value returned will be in the 
+			range <code>[0.0, 1.0]</code> where a smaller value corresponds to being closer to the camera.<br/><br/></li>
+		<li><strong>Interpolate outer tessellation levels</strong>: We computed the normalized distance for each vertex of our patch.  These vertices 
+			coorespond to the corner of a quad.  The tessellation levels correspond to the edges of the quads.  For each edge, we'll use the vertex 
+			that is closer to the camera as the interpolation parameter to result in a higher level of detail.  For each edge, we'll interpolate 
+			from the maximum tessellation level (more detail) at close distances to the camera down to the minimum tessellation level (less detail) at
+          far distances to the camera.<br/><br/></li>
+		<li><strong>Set outer tessellation levels</strong>: Assign each corresponding outer tessellation level for the corresponding edge.<br/><br/></li>
+		<li><strong>Compute &amp; set inner tessellation levels</strong>: Each inner tessellation level is along the same dimension as two 
+			outer tessellation levels.  Use the higher outer tessellation level for the inner tessellation level.</li>
+	</ol>
+
+	<pre><code>// ----------------------------------------------------------------------
+// invocation zero controls tessellation levels for the entire patch
+if(gl_InvocationID == 0)
+{
+    // ----------------------------------------------------------------------
+    // Step 1: define constants to control tessellation parameters
+	// set these as desired for your world scale
+    const int MIN_TESS_LEVEL = 4;
+    const int MAX_TESS_LEVEL = 64;
+    const float MIN_DISTANCE = 20;
+    const float MAX_DISTANCE = 800;
+
+    // ----------------------------------------------------------------------
+    // Step 2: transform each vertex into eye space
+    vec4 eyeSpacePos00 = view * model * gl_in[0].gl_Position;
+    vec4 eyeSpacePos01 = view * model * gl_in[1].gl_Position;
+    vec4 eyeSpacePos10 = view * model * gl_in[2].gl_Position;
+    vec4 eyeSpacePos11 = view * model * gl_in[3].gl_Position;
+
+    // ----------------------------------------------------------------------
+    // Step 3: "distance" from camera scaled between 0 and 1
+    float distance00 = clamp((abs(eyeSpacePos00.z)-MIN_DISTANCE) / (MAX_DISTANCE-MIN_DISTANCE), 0.0, 1.0);
+    float distance01 = clamp((abs(eyeSpacePos01.z)-MIN_DISTANCE) / (MAX_DISTANCE-MIN_DISTANCE), 0.0, 1.0);
+    float distance10 = clamp((abs(eyeSpacePos10.z)-MIN_DISTANCE) / (MAX_DISTANCE-MIN_DISTANCE), 0.0, 1.0);
+    float distance11 = clamp((abs(eyeSpacePos11.z)-MIN_DISTANCE) / (MAX_DISTANCE-MIN_DISTANCE), 0.0, 1.0);
+
+    // ----------------------------------------------------------------------
+    // Step 4: interpolate edge tessellation level based on closer vertex
+    float tessLevel0 = mix( MAX_TESS_LEVEL, MIN_TESS_LEVEL, min(distance10, distance00) );
+    float tessLevel1 = mix( MAX_TESS_LEVEL, MIN_TESS_LEVEL, min(distance00, distance01) );
+    float tessLevel2 = mix( MAX_TESS_LEVEL, MIN_TESS_LEVEL, min(distance01, distance11) );
+    float tessLevel3 = mix( MAX_TESS_LEVEL, MIN_TESS_LEVEL, min(distance11, distance10) );
+
+    // ----------------------------------------------------------------------
+    // Step 5: set the corresponding outer edge tessellation levels
+    gl_TessLevelOuter[0] = tessLevel0;
+    gl_TessLevelOuter[1] = tessLevel1;
+    gl_TessLevelOuter[2] = tessLevel2;
+    gl_TessLevelOuter[3] = tessLevel3;
+
+    // ----------------------------------------------------------------------
+    // Step 6: set the inner tessellation levels to the max of the two parallel edges
+    gl_TessLevelInner[0] = max(tessLevel1, tessLevel3);
+    gl_TessLevelInner[1] = max(tessLevel0, tessLevel2);
+}
+	</code></pre>
+
+	<p>
+		The dynamic tessellation levels of each patch is not necessarily noticeable right away when looking at the resultant image.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/gpu_lod.png" width="600"
+		 alt="GPU Terrain Dynamic Level of Detail" title="GPU Terrain Dynamic Level of Detail" class="clean">
+
+	<p>
+		When we look at the wireframe model, we can more clearly see the patch resolution increasing as the points get closer
+		to the camera.  This is purposely a drastic change in the image to demonstrate the effect that can be accomplished.  In practice, you 
+		would likely want a smoother more gradual transition.
+	</p>
+
+	<img src="/img/guest/2021/tessellation/tessellation/gpu_lod_wireframe.png" width="600"
+		 alt="GPU Terrain Dynamic Level of Detail Wireframe" title="GPU Terrain Dynamic Level of Detail Wireframe" class="clean">
+
+	<p>
+		You can find the complete source code for this chapter <a href="/code_viewer_gh.php?code=src/8.guest/2021/3.tessellation/terrain_gpu_dist/main.cpp" target="_blank">here</a>.
+		In the <a href="https://learnopengl.com/Guest-Articles/2021/Tessellation/Surfaces">next chapter</a>, we'll take a look at using tessellation shaders to render
+		smooth curves and surfaces.
+	</p>
+
+	<h2 id="ex">Exercises</h2>
+	<p>
+		Some additional techniques to add on and investigate:
+	</p>
+	<ol>
+		<li><strong>Biome Mapping</strong>: In addition to using a height map for the shape of the terrain, use climate
+			simulation to map the temperature, moisture, and other data for the appearance of the terrain.  A simple
+			example of ocean/beach/forest/mountain/snow biomes based on the elevation is shown below.
+			<img src="/img/guest/2021/tessellation/tessellation/biomes.png" width="600" alt="Terrain with mountain biomes"
+                 title="Terrain with mountain biomes" class="clean"/>
+		</li>
+		<li><strong>Procedurally Generate Infinite Terrain</strong>: Instead of reading height data from a predefined
+		and static height map texture of fixed size, use a noise function to generate the height data through space.</li>
+		<li><strong>Roughness-based Level of Detail</strong>: Instead of na&#239;vely using the eye space distance of
+		the patch corner points to determine the appropriate tessellation levels, use the roughness of the patch to
+		determine the appropriate tessellation level.  </li>
+	</ol>
+
+	<h2 id="ref">References</h2>
+	<ul>
+		<li><a href="https://tangrams.github.io/heightmapper/" target="_blank">Tangram Heightmapper</a></li>
+		<li><a href="https://www.khronos.org/opengl/wiki/Tessellation" target="_blank">Tessellation - OpenGL Wiki</a></li>
+	</ul>
+
+      <author>
+      <strong>Article by: </strong> Dr. Jeffrey Paone<br/>
+		<strong>Contact: </strong> <a href="mailto:jpaone@mines.edu" target="_blank">email</a>
+	</author>
+    </div>
+    
+    <div id="hover">
+        HI
+    </div>
+	
+	
+<!-- 728x90/320x50 sticky footer -->
+<div id="disqus_thread"></div>
+
+</div> <!-- container div -->
+
+
+</div> <!-- super container div -->
+</body>
+</html>

@@ -1,0 +1,1030 @@
+
+
+ <!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8"/>
+    <title>LearnOpenGL - Area Lights</title>	<!--<title>Learn OpenGL, extensive tutorial resource for learning Modern OpenGL</title>-->
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico"  />
+    <meta name="description" content="Learn OpenGL . com provides good and clear modern 3.3+ OpenGL tutorials with clear examples. A great resource to learn modern OpenGL aimed at beginners.">
+	<meta name="fragment" content="!"> 
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-51879160-1', 'learnopengl.com');
+      ga('send', 'pageview');
+
+    </script>
+    <script>
+	    </script>
+	<!--<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>-->
+	<script>
+		</script>
+		<script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+	<script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+	<script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+	<script>
+        window.ezstandalone = window.ezstandalone || {};
+        ezstandalone.cmd = ezstandalone.cmd || [];
+    </script>
+	<!--<script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>-->
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7855791439695850"
+     crossorigin="anonymous"></script>
+	<script src="/js/jquery-1.11.0.min.js"></script>
+	<script src="/js/hoverintent.js"></script>
+	<link rel="stylesheet" type="text/css" href="/layout.css">
+    <link rel="stylesheet" type="text/css" href="/js/styles/obsidian.css">
+    <script src="/js/highlight.pack.js"></script>    
+    <script src="/js/functions.js"></script>
+    <script type="text/javascript" src="/js/mathjax/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script>
+    // Has to be loaded last due to content bug 
+    MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>  
+        $(document).ready(function() {
+            // check if user visited from the old # based urls, re-direct to ?p= form
+            if(window.location.hash)
+            {
+                var name = window.location.hash.substring(2);
+                // name = name.replace(/-/g," ");
+                var index = name.indexOf('#'); // Remove any hash fragments from the url (Disquss adds hash fragments for comments, but results in 404 pages)
+                if(index >= 0)
+                    name = name.substring(0, index);
+                
+                window.location.href = "https://learnopengl.com/" + name;
+            } else {
+                    // Check if data has been succesfully loaded, if so: change title bar as ajax hash fragment
+                    var title = $('#content-url').text();
+                  
+					// place video tag 
+					 if(title != '' ) {
+											//var videoad = "%3Cdiv id=\'waldo-tag-14070\'%3E %3Cscript%3Egoogletag.cmd.push(function() {googletag.display(\'waldo-tag-14070\'); }); %3C/script%3E%3C/div%3E";
+						//$('#content p:nth-of-type(3)').after(unescape(videoad));
+										}
+					
+                    // Adjust ads for correct bottom positioning based on content size
+                    //window.setTimeout(function() {
+                    //    AdPositioning();
+                    //}, 3000);
+                  
+                  
+                    // set API resets after time-out (once content is properly loaded)
+                    window.setTimeout(function() {  
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);    
+                        
+                        var page_url = title == "" ? "http://www.learnopengl.com/" : "http://www.learnopengl.com/" + title;
+                        if(typeof DISQUS !== 'undefined') {                                              
+                            DISQUS.reset({
+                              reload: true,
+                              config: function () {  
+                                this.page.identifier = title;  
+                                this.page.url = page_url;
+                              }
+                            });
+                            $('#disqus_thread').show();
+                        }
+                           // Refresh callbacks on <function> tags
+                        SetFunctionTagCallbacks();        
+                    }, 1000);
+                                        
+                    // Zet ook de juiste button op 'selected'
+                    $('#nav li span, #nav li a').removeClass('selected');                
+                    if(title != '')
+                    {                    
+                        $('#nav li[id=\'' + title + '\']').children('span, a').addClass('selected');
+                    }
+                    // En open menu waar nodig
+                    var parents = $('#nav span.selected, #nav a.selected').parents('li').children('span.closed, a.closed');
+                    var index = 0;
+                    for(index = parents.length - 1; index >= 0; index--)
+                    {             
+                        
+                        var id = $(parents[index]).attr("id").replace( /^\D+/g, '');
+                        MenuClick(id, false);
+                    }                          
+                
+            }
+
+            // Set up Ezoic ads
+            ezstandalone.cmd.push(function () {
+                ezstandalone.showAds(103, 104, 106, 108, 111, 113 );
+            });
+
+            ezstandalone.cmd.push(function () { ezstandalone.showAds( 107, 110, 112 ); });
+            // Set up DISQUS
+            // $(document).ready(function() {
+            var disqus_shortname = 'learnopengl';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            // });
+        });
+
+    </script>
+</head>
+<body>
+<a href="https://learnopengl.com">
+<div id="header">
+</div>
+</a>
+
+<div id="supercontainer">
+    <!-- 728x90/320x50 -->
+    <div id="header_ad">
+	<div id="ezoic-pub-ad-placeholder-103"></div>    </div>
+    <div id="rightad_container">
+		<!--<div data-ea-publisher="learnopenglcom" data-ea-type="image" data-ea-style="stickybox"></div>-->
+        <div id="rightad">       
+			<div id="ezoic-pub-ad-placeholder-104"></div>        </div>
+        <div id="admessage">
+            If you're running AdBlock, please consider whitelisting this site if you'd like to support LearnOpenGL (it helps <strong>a lot</strong>); and no worries, I won't be mad if you don't :)
+        </div>
+		
+		<div id="rightonetenthad">
+             <div id="ezoic-pub-ad-placeholder-103"></div>
+        </div>
+        
+        <div id="rightthreetenthad">
+            <div id="ezoic-pub-ad-placeholder-106"></div>
+        </div>
+		
+		<div id="rightfifthtenthad">
+            <div id="ezoic-pub-ad-placeholder-107"></div>		</div>
+		
+		<div id="rightseventhtenthdad">
+            <div id="ezoic-pub-ad-placeholder-108"></div>
+        </div>
+
+        <div id="rightninthtenthdad">
+            		</div>
+		
+    </div>
+    <div id="container">
+        <div id="loading"></div>
+<script> 
+$(document).ready(function() {
+$('#menu-item4').mousedown(function() { MenuClick(4, true) });
+$('#menu-item48').mousedown(function() { MenuClick(48, true) });
+$('#menu-item56').mousedown(function() { MenuClick(56, true) });
+$('#menu-item63').mousedown(function() { MenuClick(63, true) });
+$('#menu-item100').mousedown(function() { MenuClick(100, true) });
+$('#menu-item102').mousedown(function() { MenuClick(102, true) });
+$('#menu-item113').mousedown(function() { MenuClick(113, true) });
+$('#menu-item116').mousedown(function() { MenuClick(116, true) });
+$('#menu-item78').mousedown(function() { MenuClick(78, true) });
+$('#menu-item81').mousedown(function() { MenuClick(81, true) });
+$('#menu-item85').mousedown(function() { MenuClick(85, true) });
+$('#menu-item125').mousedown(function() { MenuClick(125, true) });
+$('#menu-item128').mousedown(function() { MenuClick(128, true) });
+$('#menu-item129').mousedown(function() { MenuClick(129, true) });
+$('#menu-item133').mousedown(function() { MenuClick(133, true) });
+$('#menu-item134').mousedown(function() { MenuClick(134, true) });
+$('#menu-item138').mousedown(function() { MenuClick(138, true) });
+$('#menu-item142').mousedown(function() { MenuClick(142, true) });
+$('#menu-item143').mousedown(function() { MenuClick(143, true) });
+}); 
+</script>   
+    <div id="nav">
+         <div id="social">
+            <a href="https://github.com/JoeyDeVries/LearnOpenGL" target="_blank">
+                    <img src="/img/github.png" class="social_ico">
+            </a>
+            <a href="https://twitter.com/JoeyDeVriez" target="_blank">
+                <img src="/img/twitter.png" class="social_ico">
+            </a>
+          
+        </div>
+    <img src='img/nav-button_bottom-arrow.png' style='display: none'><ol><li id='Introduction'><a id="menu-item1" href="https://learnopengl.com/Introduction">Introduction </a></li><li id='Getting-started'><span id="menu-item4" class="closed">Getting started </span><ol id="menu-items-of4" style="display:none;"><li id='Getting-started/OpenGL'><a id="menu-item49" href="https://learnopengl.com/Getting-started/OpenGL">OpenGL </a></li><li id='Getting-started/Creating-a-window'><a id="menu-item5" href="https://learnopengl.com/Getting-started/Creating-a-window">Creating a window </a></li><li id='Getting-started/Hello-Window'><a id="menu-item6" href="https://learnopengl.com/Getting-started/Hello-Window">Hello Window </a></li><li id='Getting-started/Hello-Triangle'><a id="menu-item38" href="https://learnopengl.com/Getting-started/Hello-Triangle">Hello Triangle </a></li><li id='Getting-started/Shaders'><a id="menu-item39" href="https://learnopengl.com/Getting-started/Shaders">Shaders </a></li><li id='Getting-started/Textures'><a id="menu-item40" href="https://learnopengl.com/Getting-started/Textures">Textures </a></li><li id='Getting-started/Transformations'><a id="menu-item43" href="https://learnopengl.com/Getting-started/Transformations">Transformations </a></li><li id='Getting-started/Coordinate-Systems'><a id="menu-item44" href="https://learnopengl.com/Getting-started/Coordinate-Systems">Coordinate Systems </a></li><li id='Getting-started/Camera'><a id="menu-item47" href="https://learnopengl.com/Getting-started/Camera">Camera </a></li><li id='Getting-started/Review'><a id="menu-item50" href="https://learnopengl.com/Getting-started/Review">Review </a></li></ol></li><li id='Lighting'><span id="menu-item48" class="closed">Lighting </span><ol id="menu-items-of48" style="display:none;"><li id='Lighting/Colors'><a id="menu-item51" href="https://learnopengl.com/Lighting/Colors">Colors </a></li><li id='Lighting/Basic-Lighting'><a id="menu-item52" href="https://learnopengl.com/Lighting/Basic-Lighting">Basic Lighting </a></li><li id='Lighting/Materials'><a id="menu-item53" href="https://learnopengl.com/Lighting/Materials">Materials </a></li><li id='Lighting/Lighting-maps'><a id="menu-item54" href="https://learnopengl.com/Lighting/Lighting-maps">Lighting maps </a></li><li id='Lighting/Light-casters'><a id="menu-item55" href="https://learnopengl.com/Lighting/Light-casters">Light casters </a></li><li id='Lighting/Multiple-lights'><a id="menu-item58" href="https://learnopengl.com/Lighting/Multiple-lights">Multiple lights </a></li><li id='Lighting/Review'><a id="menu-item57" href="https://learnopengl.com/Lighting/Review">Review </a></li></ol></li><li id='Model-Loading'><span id="menu-item56" class="closed">Model Loading </span><ol id="menu-items-of56" style="display:none;"><li id='Model-Loading/Assimp'><a id="menu-item59" href="https://learnopengl.com/Model-Loading/Assimp">Assimp </a></li><li id='Model-Loading/Mesh'><a id="menu-item60" href="https://learnopengl.com/Model-Loading/Mesh">Mesh </a></li><li id='Model-Loading/Model'><a id="menu-item61" href="https://learnopengl.com/Model-Loading/Model">Model </a></li></ol></li><li id='Advanced-OpenGL'><span id="menu-item63" class="closed">Advanced OpenGL </span><ol id="menu-items-of63" style="display:none;"><li id='Advanced-OpenGL/Depth-testing'><a id="menu-item72" href="https://learnopengl.com/Advanced-OpenGL/Depth-testing">Depth testing </a></li><li id='Advanced-OpenGL/Stencil-testing'><a id="menu-item73" href="https://learnopengl.com/Advanced-OpenGL/Stencil-testing">Stencil testing </a></li><li id='Advanced-OpenGL/Blending'><a id="menu-item74" href="https://learnopengl.com/Advanced-OpenGL/Blending">Blending </a></li><li id='Advanced-OpenGL/Face-culling'><a id="menu-item77" href="https://learnopengl.com/Advanced-OpenGL/Face-culling">Face culling </a></li><li id='Advanced-OpenGL/Framebuffers'><a id="menu-item65" href="https://learnopengl.com/Advanced-OpenGL/Framebuffers">Framebuffers </a></li><li id='Advanced-OpenGL/Cubemaps'><a id="menu-item66" href="https://learnopengl.com/Advanced-OpenGL/Cubemaps">Cubemaps </a></li><li id='Advanced-OpenGL/Advanced-Data'><a id="menu-item69" href="https://learnopengl.com/Advanced-OpenGL/Advanced-Data">Advanced Data </a></li><li id='Advanced-OpenGL/Advanced-GLSL'><a id="menu-item67" href="https://learnopengl.com/Advanced-OpenGL/Advanced-GLSL">Advanced GLSL </a></li><li id='Advanced-OpenGL/Geometry-Shader'><a id="menu-item68" href="https://learnopengl.com/Advanced-OpenGL/Geometry-Shader">Geometry Shader </a></li><li id='Advanced-OpenGL/Instancing'><a id="menu-item70" href="https://learnopengl.com/Advanced-OpenGL/Instancing">Instancing </a></li><li id='Advanced-OpenGL/Anti-Aliasing'><a id="menu-item75" href="https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing">Anti Aliasing </a></li></ol></li><li id='Advanced-Lighting'><span id="menu-item100" class="closed">Advanced Lighting </span><ol id="menu-items-of100" style="display:none;"><li id='Advanced-Lighting/Advanced-Lighting'><a id="menu-item101" href="https://learnopengl.com/Advanced-Lighting/Advanced-Lighting">Advanced Lighting </a></li><li id='Advanced-Lighting/Gamma-Correction'><a id="menu-item110" href="https://learnopengl.com/Advanced-Lighting/Gamma-Correction">Gamma Correction </a></li><li id='Advanced-Lighting/Shadows'><span id="menu-item102" class="closed">Shadows </span><ol id="menu-items-of102" style="display:none;"><li id='Advanced-Lighting/Shadows/Shadow-Mapping'><a id="menu-item103" href="https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping">Shadow Mapping </a></li><li id='Advanced-Lighting/Shadows/Point-Shadows'><a id="menu-item104" href="https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows">Point Shadows </a></li></ol></li><li id='Advanced-Lighting/Normal-Mapping'><a id="menu-item106" href="https://learnopengl.com/Advanced-Lighting/Normal-Mapping">Normal Mapping </a></li><li id='Advanced-Lighting/Parallax-Mapping'><a id="menu-item107" href="https://learnopengl.com/Advanced-Lighting/Parallax-Mapping">Parallax Mapping </a></li><li id='Advanced-Lighting/HDR'><a id="menu-item111" href="https://learnopengl.com/Advanced-Lighting/HDR">HDR </a></li><li id='Advanced-Lighting/Bloom'><a id="menu-item112" href="https://learnopengl.com/Advanced-Lighting/Bloom">Bloom </a></li><li id='Advanced-Lighting/Deferred-Shading'><a id="menu-item108" href="https://learnopengl.com/Advanced-Lighting/Deferred-Shading">Deferred Shading </a></li><li id='Advanced-Lighting/SSAO'><a id="menu-item109" href="https://learnopengl.com/Advanced-Lighting/SSAO">SSAO </a></li></ol></li><li id='PBR'><span id="menu-item113" class="closed">PBR </span><ol id="menu-items-of113" style="display:none;"><li id='PBR/Theory'><a id="menu-item114" href="https://learnopengl.com/PBR/Theory">Theory </a></li><li id='PBR/Lighting'><a id="menu-item115" href="https://learnopengl.com/PBR/Lighting">Lighting </a></li><li id='PBR/IBL'><span id="menu-item116" class="closed">IBL </span><ol id="menu-items-of116" style="display:none;"><li id='PBR/IBL/Diffuse-irradiance'><a id="menu-item117" href="https://learnopengl.com/PBR/IBL/Diffuse-irradiance">Diffuse irradiance </a></li><li id='PBR/IBL/Specular-IBL'><a id="menu-item118" href="https://learnopengl.com/PBR/IBL/Specular-IBL">Specular IBL </a></li></ol></li></ol></li><li id='In-Practice'><span id="menu-item78" class="closed">In Practice </span><ol id="menu-items-of78" style="display:none;"><li id='In-Practice/Debugging'><a id="menu-item79" href="https://learnopengl.com/In-Practice/Debugging">Debugging </a></li><li id='In-Practice/Text-Rendering'><a id="menu-item80" href="https://learnopengl.com/In-Practice/Text-Rendering">Text Rendering </a></li><li id='In-Practice/2D-Game'><span id="menu-item81" class="closed">2D Game </span><ol id="menu-items-of81" style="display:none;"><li id='In-Practice/2D-Game/Breakout'><a id="menu-item82" href="https://learnopengl.com/In-Practice/2D-Game/Breakout">Breakout </a></li><li id='In-Practice/2D-Game/Setting-up'><a id="menu-item88" href="https://learnopengl.com/In-Practice/2D-Game/Setting-up">Setting up </a></li><li id='In-Practice/2D-Game/Rendering-Sprites'><a id="menu-item83" href="https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites">Rendering Sprites </a></li><li id='In-Practice/2D-Game/Levels'><a id="menu-item84" href="https://learnopengl.com/In-Practice/2D-Game/Levels">Levels </a></li><li id='In-Practice/2D-Game/Collisions'><span id="menu-item85" class="closed">Collisions </span><ol id="menu-items-of85" style="display:none;"><li id='In-Practice/2D-Game/Collisions/Ball'><a id="menu-item95" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Ball">Ball </a></li><li id='In-Practice/2D-Game/Collisions/Collision-detection'><a id="menu-item96" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-detection">Collision detection </a></li><li id='In-Practice/2D-Game/Collisions/Collision-resolution'><a id="menu-item97" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-resolution">Collision resolution </a></li></ol></li><li id='In-Practice/2D-Game/Particles'><a id="menu-item89" href="https://learnopengl.com/In-Practice/2D-Game/Particles">Particles </a></li><li id='In-Practice/2D-Game/Postprocessing'><a id="menu-item90" href="https://learnopengl.com/In-Practice/2D-Game/Postprocessing">Postprocessing </a></li><li id='In-Practice/2D-Game/Powerups'><a id="menu-item91" href="https://learnopengl.com/In-Practice/2D-Game/Powerups">Powerups </a></li><li id='In-Practice/2D-Game/Audio'><a id="menu-item94" href="https://learnopengl.com/In-Practice/2D-Game/Audio">Audio </a></li><li id='In-Practice/2D-Game/Render-text'><a id="menu-item92" href="https://learnopengl.com/In-Practice/2D-Game/Render-text">Render text </a></li><li id='In-Practice/2D-Game/Final-thoughts'><a id="menu-item93" href="https://learnopengl.com/In-Practice/2D-Game/Final-thoughts">Final thoughts </a></li></ol></li></ol></li><li id='Guest-Articles'><span id="menu-item125" class="closed">Guest Articles </span><ol id="menu-items-of125" style="display:none;"><li id='Guest-Articles/How-to-publish'><a id="menu-item126" href="https://learnopengl.com/Guest-Articles/How-to-publish">How to publish </a></li><li id='Guest-Articles/2020'><span id="menu-item128" class="closed">2020 </span><ol id="menu-items-of128" style="display:none;"><li id='Guest-Articles/2020/OIT'><span id="menu-item129" class="closed">OIT </span><ol id="menu-items-of129" style="display:none;"><li id='Guest-Articles/2020/OIT/Introduction'><a id="menu-item130" href="https://learnopengl.com/Guest-Articles/2020/OIT/Introduction">Introduction </a></li><li id='Guest-Articles/2020/OIT/Weighted-Blended'><a id="menu-item132" href="https://learnopengl.com/Guest-Articles/2020/OIT/Weighted-Blended">Weighted Blended </a></li></ol></li><li id='Guest-Articles/2020/Skeletal-Animation'><a id="menu-item131" href="https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation">Skeletal Animation </a></li></ol></li><li id='Guest-Articles/2021'><span id="menu-item133" class="closed">2021 </span><ol id="menu-items-of133" style="display:none;"><li id='Guest-Articles/2021/CSM'><a id="menu-item137" href="https://learnopengl.com/Guest-Articles/2021/CSM">CSM </a></li><li id='Guest-Articles/2021/Scene'><span id="menu-item134" class="closed">Scene </span><ol id="menu-items-of134" style="display:none;"><li id='Guest-Articles/2021/Scene/Scene-Graph'><a id="menu-item135" href="https://learnopengl.com/Guest-Articles/2021/Scene/Scene-Graph">Scene Graph </a></li><li id='Guest-Articles/2021/Scene/Frustum-Culling'><a id="menu-item136" href="https://learnopengl.com/Guest-Articles/2021/Scene/Frustum-Culling">Frustum Culling </a></li></ol></li><li id='Guest-Articles/2021/Tessellation'><span id="menu-item138" class="closed">Tessellation </span><ol id="menu-items-of138" style="display:none;"><li id='Guest-Articles/2021/Tessellation/Height-map'><a id="menu-item139" href="https://learnopengl.com/Guest-Articles/2021/Tessellation/Height-map">Height map </a></li><li id='Guest-Articles/2021/Tessellation/Tessellation'><a id="menu-item140" href="https://learnopengl.com/Guest-Articles/2021/Tessellation/Tessellation">Tessellation </a></li></ol></li><li id='Guest-Articles/2021/DSA'><a id="menu-item141" href="https://learnopengl.com/Guest-Articles/2021/DSA">DSA </a></li></ol></li><li id='Guest-Articles/2022'><span id="menu-item142" class="closed">2022 </span><ol id="menu-items-of142" style="display:none;"><li id='Guest-Articles/2022/Compute-Shaders'><span id="menu-item143" class="closed">Compute Shaders </span><ol id="menu-items-of143" style="display:none;"><li id='Guest-Articles/2022/Compute-Shaders/Introduction'><a id="menu-item144" href="https://learnopengl.com/Guest-Articles/2022/Compute-Shaders/Introduction">Introduction </a></li></ol></li><li id='Guest-Articles/2022/Phys.-Based-Bloom'><a id="menu-item145" href="https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom">Phys. Based Bloom </a></li><li id='Guest-Articles/2022/Area-Lights'><a id="menu-item146" href="https://learnopengl.com/Guest-Articles/2022/Area-Lights">Area Lights </a></li></ol></li></ol></li><li id='Code-repository'><a id="menu-item99" href="https://learnopengl.com/Code-repository">Code repository </a></li><li id='Translations'><a id="menu-item119" href="https://learnopengl.com/Translations">Translations </a></li><li id='Privacy'><a id="menu-item147" href="https://learnopengl.com/Privacy">Privacy </a></li><li id='About'><a id="menu-item2" href="https://learnopengl.com/About">About </a></li></ol>		<div id="menu_book">
+            <a href="https://geni.us/learnopengl" target="_blank"><img src="/book/below_menu.png" class="clean"/></a>
+        </div>
+       <div id="donate">
+            <a href="https://www.paypal.me/learnopengl/" target="_blank">
+                <div id="donate_img"></div>
+                <img style="display: none" src="/img/donate_button_hover.png"/>
+            </a>
+        </div>       
+		
+		<div id="lefttwotenthad">
+            		</div>
+		
+        <div id="leftfourthtenthad">
+            <div id="ezoic-pub-ad-placeholder-111"></div>
+        </div>
+		
+		<div id="leftsixthtenthad">
+            <div id="ezoic-pub-ad-placeholder-112"></div>		</div>
+		
+        <div id="lefteighttenthad">
+            <div id="ezoic-pub-ad-placeholder-113"></div>
+        </div>
+
+        <div id="lefttenthtenthad">
+                    </div>
+    </div>
+    
+    <div id="content">
+    <h1 id="content-title">Area Lights</h1>
+<h1 id="content-url" style='display:none;'>Guest-Articles/2022/Area-Lights</h1>
+    <br>
+    <img src="/img/guest/2022/area_lights/article_image.png">
+    <center><i>Sponza scene illuminated by a textured, rectangular area light. [1]
+    </i></center>
+
+    <h2>Introduction</h2>
+    <p>
+      We want lights. And we want them everywhere. In the basic tutorial series 3 distinct light
+      types have been presented thoroughly: directional lights, point lights, and spotlights. And
+      while we can achieve good results with them, they all have a major drawback: Light sources
+      in the real world are (almost) never restricted to a single (infinitely-small) point - rather they
+      usually cover an area.
+    </p>
+
+    <p>
+      But we cannot easily represent such a light source using those 3 basic types of light.
+      Imagine if we wanted to display a rectangular light source: It would require us to place
+      hundreds, if not thousands, of tiny spot lights next to each other in a close uniform grid.
+      Besides the obvious loss of rendering efficiency the result would likely not be very good, and
+      if the camera would be very close to the area light source we would probably need even
+      more small lights in that area. And this is not even taking into account the amount of over-
+      illumination which would most likely appear, so each light would have to be dimmed quite a
+      lot for all these lights to give a combined, realistic appearance. Clearly, this is not desirable.<br/>
+      &nbsp; &nbsp; With raytracing this problem can be solved quite straight-forward by Monte-Carlo sampling,
+      but assuming most readers in here are interested in real-time applications (ie. games),
+      this is not really of much relevance to us. (yet!)
+    </p>
+
+    <p>
+      This tutorial describes how to render area light sources from arbitrarily convex polygons
+      using a method called ”Linearly Transformed Cosines”, originally published in 2016 by Eric
+      Heitz, Jonathan Dupuy, Stephen Hill, and David Neubelt. Later extensions have been made
+      to this method to support circular shapes in addition to rectangular or sharp-edged polygons.
+    </p>
+
+    <p>
+      In this article, we will look at the theory behind implementing rectangular area lights.
+    </p>
+
+    <h3>Prerequisites</h3>
+
+    <p>
+      This method builds upon physically-based rendering techniques (PBR), so familiarity with
+      the core concepts is recommended for an optimal learning experience. It is also very math-heavy,
+      so familiarity with several mathematical concepts is recommended for a full learning experience,
+      including: Integrals, linear algebra, trigonometry, solid angle measurement, and distributions.
+      But if you simply want to implement it and see it working then you may copy/paste the code snippets.
+      This stuff is very advanced, and while studying the mathematics can be worthwhile, you are
+      certainly not expected to understand it all.
+      Some clever researchers did the hard work for us, so that our rendering applications can look
+      cool! :)<br/>
+      &nbsp; &nbsp; You may also have noticed that the cover image has a textured light source.
+      This article will not go into details on how to accomplish this, although it might be touched
+      upon in a future chapter. So let's get started...
+    </p>
+
+    <h2>Problem description</h2>
+
+    <p>
+      Let’s say we have a scene, and we place a rectangle in the scene at some position in close
+      proximity to our game objects. We wish for this rectangle to represent a light source and
+      thus, emit light. We also have our BRDF, which describes how the surfaces in the scene
+      scatter light.<br/>
+      &nbsp; &nbsp; So given incoming radiance from the light source around a given shading point (ie. a
+      fragment), we need to solve the integral of the BRDF, over the spherical polygon, as the
+      solid angle of the light source polygon subtended at the unit hemisphere around the shading
+      point, to calculate the outgoing radiance. This outgoing radiance is what will reflect back to
+      our eyes and thusly illuminate the scene.<br/>
+      &nbsp; &nbsp; The article which introduced this method describes how a linear transformation,
+      represented by a 3x3 matrix, can be applied to a distribution thus yielding a new family of
+      distributions which share some core properties. These properties are very well-explained in
+      Eric Heitz’ presentation slides [3]. But since this is meant to be a programming guide
+      primarily, we will not discuss their derivations here. The new family of distributions have been
+      conveniently dubbed ”Linearly Transformed Cosines”, because a clamped cosine distribution
+      (by choice) has been applied a linear transformation, while retaining the important
+      properties which makes them a suitable approximation to physically-based BRDFs. ”Clamped”
+      refers to a cosine distribution (or ”Lambertian” distribution), which has been clamped to the
+      hemisphere. This is important since unit sphere solid angle measures are in the interval [0,
+      4π], while a light source should probably never illuminate objects facing away from them;
+      thus we clamp the distribution to the ”upper” hemisphere (oriented around the surface normal
+      of the incident shading point).
+    </p>
+
+    <p>
+      Well-known BRDFs, such as the GGX microfacet model, have sophisticated shapes that
+      support anisotropic stretching at grazing angles, skewness, and varying degrees of material
+      roughnesses, among others. It is due to these properties that BRDFs yield realistically-looking
+      results. So if we can design a linear transformation that adds these properties to the cosine
+      distribution, through matrix-multiplication, then we can obtain these desired properties. The
+      article [1] describes how this is possible. The cosine distribution is a very good choice because
+      we have a closed-form representation of its integral:
+    </p>
+
+    \[
+    D_o(\omega_o) = \dfrac{1}{\pi}cos \theta_o
+    \]
+
+    <p>
+      In summary, our strategy is this: Construct a 3x3 matrix which represents our BRDF,
+      use it to transform a clamped cosine distribution, and then compute the solid angle measure
+      through the closed-form representation.
+    </p>
+
+    <p>
+      You may remember from linear algebra that if we multiply two matrices A and B, we
+      may also perform an ”inverse” operation (given that B is invertible):
+    </p>
+
+    \[
+    A \times B = C \qquad \Leftrightarrow \qquad C \times B^{-1} = A
+    \]
+
+    <p>
+      If our linear transformation matrix, M, is applied to our cosine distribution to yield our
+      BRDF-approximation, then we may compute in reverse order, allowing us to elegantly solve
+      the integral. This idea is illustrated below. As the authors suggest, we may think of this as
+      transforming back to cosine space.
+    </p>
+
+    <img src="/img/guest/2022/area_lights/inverse_transformation.png"/>
+	
+    <center><i>Inverse transformation back to cosine space, using the inverse linear transformation matrix.
+      Taken from [2].
+    </i></center>
+
+    <h2>Construction of the transformation matrix</h2>
+
+    <p>
+      The linear transformation matrix M needs to represent the BRDF, parameterized over both
+      the viewing angle and the material roughness. The following images illustrate the idea:
+    </p>
+
+    <img src="/img/guest/2022/area_lights/matrix_construction.png"/>
+	
+    <center><i>Constructing the linear transformation by a chained matrix-multiplication to represent desired
+features of a BRDF. [2]
+    </i></center>
+
+    <p>
+      The roughness parameter is directly translated to the value from the material’s roughness
+      texture found in a typical PBR-pipeline, and the anisotropy and skewness stretches and
+      skews the reflected highlight at increasingly grazing viewing angles for realistic renderings.
+      As illustrated, we may choose an arbitrary amount of transformations, depending on our
+      requirements and the specific BRDF model we wish to represent. In this tutorial we will
+      use a matrix which approximates (but not perfectly replicates) the GGX microfacet model.
+      As mentioned, we need 1 matrix M, for each combination of material roughness and viewing
+      angle, which directly translates to 1 matrix M for each shaded fragment! Not only that,
+      but we need to sample the matrix several times and minimize the error compared to our
+      chosen BRDF. Clearly, this is not doable for real-time purposes, so the matrix M needs to be
+      precomputed for each roughness/view-angle pair. Since both the matrix M and its inverse
+      are sparse matrices with 5 non-zero values, we can store the inverted matrix in a 4-vector
+      by normalizing by the middle field. This works well in pratice and neatly allows us to send
+      the matrices to the GPU in a 2D-texture. We choose a 64x64 texture to save memory bandwith, and
+      because it yields acceptable results.
+    </p>
+
+    <h2>Computing the integral</h2>
+
+    <p>
+      To compute the integral, we can calculate a sum of integrals over the boundary edges of the
+      spherical polygon. This may sound like sorcery, and without making this tutorial too lengthy
+      I will quote the presentation slides [2] and encourage the reader to investigate further:
+    </p>
+
+    <p><center><i>
+	  ”One way to think about it is as an application of Stoke’s theorem, which you might have
+	  encountered in other areas, such as fluid simulation.”
+    </i></center></p>
+
+    <p>
+      Stoke's Theorem states that "a line integral of a vector field over a loop is equal to the
+      flux of its curl through the enclosed surface." (source: Wikipedia [11]).
+      Given a boundary edge of the polygon, defined by vertices v1 and v2, we calculate the
+      edge’s integral as follows:
+    </p>
+
+    \[
+    acos(v_1 \cdot v_2) \dfrac{v_1 \times v_2}{|| v_1 \times v_2 ||} \cdot n
+    \]
+
+    <p>
+      And for a light polygon with N edges we can quite accurately calculate the solid angle of
+      the polygon by summing the edge integrals:
+    </p>
+
+    \[
+    \int_{\Omega}\, \approx \, \frac{1}{2\pi} \sum_{i=1}^{N} \left[ acos(v_1 \cdot v_2) \dfrac{v_1 \times v_2}{|| v_1 \times v_2 ||} \cdot n \right]
+    \]
+
+    <p>
+      Here the vectors v1 and v2 are direction vectors from the shading point to the polygon
+      edge’s vertices, the ”acos(v1 · v2 )” is the arc length in radians of the polygon edge projected
+      onto the unit sphere situated about the shading point, and the normalized cross product
+      yields a vector, u, which is perpendicular to v1 and v2 . We dot with the normal vector of the
+      shading point to project onto the plane that is tangent to the shading point and which has
+      normal vector n.
+    </p>
+
+    <img src="/img/guest/2022/area_lights/edge_area_integral.png"/>
+	
+    <center><i>The subtended area integral is computed from the sum of edge integrals, by application
+	of Stoke's Theorem. Images taken from [2].
+    </i></center>
+
+    <p>
+      As described in [2], the authors found significant visual artifacts when computing the
+      edge integrals, because of missing precision found in the acos function. So instead they
+      introduced a cubic function which approximates acos. The function for calculating the edge
+      integral with the cubic function is shown below in glsl-code.
+      This function differs from the cubic fit originally introduced in [2]. This optimized
+      version is a later iteration, and yields a better fit.
+    </p>
+
+<pre><code>vec3 IntegrateEdge(vec3 v1, vec3 v2, vec3 N) {
+    float x = dot(v1, v2);
+    float y = abs(x);
+    float a = 0.8543985 + (0.4965155 + 0.0145206*y)*y;
+    float b = 3.4175940 + (4.1616724 + y)*y;
+    float v = a / b;
+    float theta sintheta = (x > 0.0) ? v : 0.5*inversesqrt(max(1.0 - x*x, 1e-7)) - v;
+    return dot(cross(v1, v2)*theta sintheta, N);
+}
+</code></pre>
+
+    <h2>Clip polygon to upper hemisphere</h2>
+
+    <p>
+      The <fun>IntegrateEdge</fun> function shown above is, although a very good solution, not perfect.
+      In order to get the correct radiance calculation we need to clamp the transformed cosine
+      distribution to the upper hemisphere. This process may also be referred to as ”horizon-clipping”,
+      and involves a lot of branching. See this image below:
+    </p>
+
+    <img src="/img/guest/2022/area_lights/horizon_clipping.png"/>
+
+    <p>
+      If the light source moves below, or partially below, the horizon, it needs to be clipped,
+      which in practice involves moving the lower vertices of each edge upwards such that they are
+      no longer below the horizon. And if an edge is entirely situated below the horizon its vertices
+      will be situated atop of each other. In either case the computed edge integral will yield a
+      lower (or possibly zero) value resulting in less outgoing radiance. But if we need to make
+      a comparison for each vertex of all edges then we will end up with heavily branched code,
+      which is always bad in a fragment shader. So instead we will modify our formula for the edge
+      integral by removing the dot product with the surface normal (and thus not project onto the
+      plane). The formula now looks like this:
+    </p>
+
+    \[
+    acos(v_1 \cdot v_2) \dfrac{v_1 \times v_2}{|| v_1 \times v_2 ||}
+    \]
+
+    <p>
+      This gives us a vector form instead, which we may think of as a vector form factor, or
+      <i>vector irradiance</i>, and it has a neat property: The length of this vector is the form factor of
+      the light polygon, in the direction of this vector. Let’s call this vector ”F ”. We can use F
+      to compute the angular extent and elevation angle by constructing a ”proxy sphere” around
+      our current shading point. The formulas are shown below:
+    </p>
+
+    \[
+    F = acos(v_1 \cdot v_2) \dfrac{v_1 \times v_2}{|| v_1 \times v_2 ||}
+    \]
+
+    \[
+    length(F) \rightarrow \text{form factor in direction of } F
+    \]
+
+    \[
+    \text{angular extent} = asin(sqrt(length(F))
+    \]
+
+    \[
+    \text{elevation angle} = dot(N, normalize(F))
+    \]
+
+    <p>
+      This can help us since we have a couple of analytical solutions for horizon-clipped sphere
+      form factors. So by precomputing the form factors for spheres of different angular extents and
+      elevation angles, we can make an additional texture lookup at runtime to fetch clipped form
+      factors, thereby efficiently solving our problem of horizon-clipping by close approximation.
+      More details are found in the slides [2], as well as in the article [1].
+    </p>
+
+    <note>
+      A form factor is an expression of the amount of outgoing energy or
+      "radiance", which emitted from a patch A1 reaches another patch A2. This is quite similar
+      to how we subtend the area light polygon on a half-sphere around each shading point.
+      Each form factor is stored in a 64x64 LUT, indexed by angular extent and elevation angle.
+      We are using the term <i>irradiance</i>, because we focus on the incoming light energi.
+      A more comprehensive introduction to form factors may be found in [13].
+    </note>
+
+    <h2>Putting it all together</h2>
+    <p>
+      Congratulations if you were able to follow along so far. This is quite math heavy, so don’t
+      worry if you didn’t understand everything. You may safely copy/paste the code examples
+      and get it working yourself, and if you are feeling adventurous then you are warmly
+      recommended to go through the source material yourself, linked at the bottom of this page. The
+      mathematics will never lose relevance. But for now, let’s progress to the fun part! :)
+      Our first step is loading the matrices onto the GPU as 2D-textures. We should remember
+      to enable bilinear filtering for the smoothest results, and edge-clamping in case we were to
+      index out-of-bounds of the texture:
+    </p>
+
+<pre><code>#include "ltc_matrix.hpp" // contains float arrays LTC1 and LTC2
+
+unsigned int loadMTexture(float* matrixTable) {
+    unsigned int texture = 0;
+    <function id='50'>glGenTextures</function>(1, &amp;texture);
+    <function id='48'>glBindTexture</function>(GL_TEXTURE_2D, texture);
+    <function id='52'>glTexImage2D</function>(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_FLOAT, matrixTable);
+    <function id='15'>glTexParameter</function>i(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    <function id='15'>glTexParameter</function>i(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    <function id='15'>glTexParameter</function>i(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    <function id='15'>glTexParameter</function>i(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    <function id='48'>glBindTexture</function>(GL_TEXTURE_2D, 0);
+    return texture;
+}
+
+unsigned int m1 = loadMTexture(LTC1);
+unsigned int m2 = loadMTexture(LTC2);
+</code></pre>
+
+    <p>
+      We use this function for the inverted transformation matrices. The authors have kindly
+      precomputed them for us, and they can be found <a href="/code_viewer_gh.php?code=src/8.guest/2022/7.area_lights/ltc_matrix.hpp" target="_blank">here</a>, or you can generate them
+      yourself by downloading the source code from [4]. We can either load them as a DXT10-
+      compressed images (.dds), or we can include them as c++-headers. I have chosen the latter,
+      because unfortunately DXT10-compression is unsupported in majority of image loading
+      libraries (the file header is not standardized!). And while it's nice to see when learning
+      what the matrices look like, it's probably best to use the .dds images when releasing a game.
+      The first texture contains the inverted transformation matrices as mentioned earlier, and the
+      second texture contains the Fresnel90, the horizon-clipping factor, and the Smith coefficient
+      for geometric attenuation (3 values in total). We bind them to our shader program during
+      rendering as we usually would:
+    </p>
+
+<pre><code><function id='49'>glActiveTexture</function>(GL_TEXTURE0);
+<function id='48'>glBindTexture</function>(GL_TEXTURE_2D, m1);
+<function id='49'>glActiveTexture</function>(GL_TEXTURE1);
+<function id='48'>glBindTexture</function>(GL_TEXTURE_2D, m2);
+</code></pre>
+
+    <p>
+      We also need to construct a vertex buffer for the vertices of the light polygon, as well as
+      some geometry on which to reflect the light. For simplicity, and for showcasing the technique
+      in a ”pure” environment, the best is to probably start with a flat plane situated horizontally
+      in our scene, and a rectangular light polygon hovering somewhere above the plane in close
+      proximity. You may also simply copy/paste my code example which does exactly this.
+    </p>
+
+    <h2>The fragment shader</h2>
+
+    <p>
+      The fragment shader is where the magic happens. Here, we perform the texture lookup to
+      construct the inverse matrix, and to retrieve the form factor. We also construct an
+      orthonormal basis in tangent space to the fragment’s world position, and compute and sum up the
+      edge integrals. So we need some uniforms, and the usual stuff such as a struct for the material
+      and the light source. The complete preamble is shown here:
+    </p>
+
+<pre><code>#version 330 core
+
+out vec4 fragColor;
+
+in vec3 worldPosition;
+in vec3 worldNormal;
+in vec2 texcoord;
+
+struct Light {
+    float intensity;
+    vec3 color;
+    vec3 points[4];
+    bool twoSided;
+};
+
+uniform Light areaLight;
+uniform vec3 areaLightTranslate;
+
+struct Material {
+    sampler2D diffuse; // texture mapping
+    vec4 albedoRoughness; // (x,y,z) = color, w = roughness
+};
+uniform Material material;
+
+uniform vec3 viewPosition;
+uniform sampler2D LTC1; // for inverse M
+uniform sampler2D LTC2; // GGX norm, fresnel, 0(unused), sphere
+
+const float LUT_SIZE = 64.0; // ltc_texture size
+const float LUT_SCALE = (LUT_SIZE - 1.0)/LUT_SIZE;
+const float LUT_BIAS = 0.5/LUT_SIZE;
+</code></pre>
+
+    <p>
+      The uniform <var>areaLightTranslate</var> is something I added for fun so that I could move the
+      light source around during runtime. It is just for showcase and not strictly needed. The
+      constant values are used for indexing into the 64x64 LUT. The rest should be somewhat
+      familiar to you.
+    </p>
+
+    <note>
+      "LUT" is an abbreviation often used in graphics. It is short for Look-Up Table, and refers
+      to an image accessed in a shader program for certain effects.<br/><br/>
+
+      The struct <var>Material</var> has a 4-vector containing both a color and a roughness value.
+      This could be a useful vector packing if you were building a deferred renderer. The color
+      is not used here, though, because the material has a texture sampler. The roughness here is
+      assumed a constant value, but the optimal scenario would be to apply a roughness texture to
+      the surface as well, as is found in most PBR pipelines.
+    </note>
+
+    <p>
+      We then figure out where in the textures we need to lookup, construct the uv-coordinates,
+      and recreate the transformation matrix:
+    </p>
+
+<pre><code>vec3 N = normalize(worldNormal);
+vec3 V = normalize(viewPosition - worldPosition);
+vec3 P = worldPosition;
+float dotNV = clamp(dot(N, V), 0.0f, 1.0f);
+
+// use roughness and sqrt(1-cos_theta) to sample M_texture
+vec2 uv = vec2(material.albedoRoughness.w, sqrt(1.0f - dotNV));
+uv = uv*LUT_SCALE + LUT_BIAS;
+
+// get 4 parameters for inverse_M
+vec4 t1 = texture(LTC1, uv);
+
+// Get 2 parameters for Fresnel calculation
+vec4 t2 = texture(LTC2, uv);
+
+mat3 Minv = mat3(
+    vec3(t1.x, 0, t1.y),
+    vec3(   0, 1,    0),
+    vec3(t1.z, 0, t1.w)
+);
+</code></pre>
+
+    <p>
+      In order to compute the solid angle we need two functions: One to compute the integral
+      for a single edge, and one to call that function several times, sum up the results, and perform
+      the horizon-clipping. The edge integral is the shortest of them, and was shown earlier in this
+      tutorial - the only difference is that we now don’t perform the dot product (as discussed), but
+      merely returns the cross product multiplied by the arc length. The other function is quite
+      lengthy and is shown in completeness below together with a few comments describing the
+      computations.
+    </p>
+
+<pre><code>vec3 LTC_Evaluate(vec3 N, vec3 V, vec3 P, mat3 Minv, vec3 points[4], bool twoSided) {
+    // construct orthonormal basis around N
+    vec3 T1, T2;
+    T1 = normalize(V - N * dot(V, N));
+    T2 = cross(N, T1);
+
+    // rotate area light in (T1, T2, N) basis
+    Minv = Minv * transpose(mat3(T1, T2, N));
+
+    // polygon (allocate 4 vertices for clipping)
+    vec3 L[4];
+
+    // transform polygon from LTC back to origin Do (cosine weighted)
+    L[0] = Minv * (points[0] - P);
+    L[1] = Minv * (points[1] - P);
+    L[2] = Minv * (points[2] - P);
+    L[3] = Minv * (points[3] - P);
+
+    // use tabulated horizon-clipped sphere
+    // check if the shading point is behind the light
+    vec3 dir = points[0] - P; // LTC space
+    vec3 lightNormal = cross(points[1] - points[0], points[3] - points[0]);
+    bool behind = (dot(dir, lightNormal) &lt; 0.0);
+
+    // cos weighted space
+    L[0] = normalize(L[0]);
+    L[1] = normalize(L[1]);
+    L[2] = normalize(L[2]);
+    L[3] = normalize(L[3]);
+
+    // integrate
+    vec3 vsum = vec3(0.0);
+    vsum += IntegrateEdgeVec(L[0], L[1]);
+    vsum += IntegrateEdgeVec(L[1], L[2]);
+    vsum += IntegrateEdgeVec(L[2], L[3]);
+    vsum += IntegrateEdgeVec(L[3], L[0]);
+
+    // form factor of the polygon in direction vsum
+    float len = length(vsum);
+
+    float z = vsum.z/len;
+    if (behind)
+        z = -z;
+
+    vec2 uv = vec2(z*0.5f + 0.5f, len); // range [0, 1]
+    uv = uv*LUT_SCALE + LUT_BIAS;
+
+    // Fetch the form factor for horizon clipping
+    float scale = texture(LTC2, uv).w;
+
+    float sum = len*scale;
+    if (!behind && !twoSided)
+        sum = 0.0;
+
+    // Outgoing radiance (solid angle) for the entire polygon
+    vec3 Lo_i = vec3(sum, sum, sum);
+    return Lo_i;
+}
+</code></pre>
+
+    <p>
+      As you can see, it’s quite lengthy, but if you followed along the theory reasonably well
+      nothing should be too surprising. One thing not yet mentioned is the addition of a variable
+      <var>twoSided</var>, given as a uniform together with the light polygon’s vertices,
+      to enable/disable double-sided illumination. You may look at the fragment shader
+      <a href="/code_viewer_gh.php?code=src/8.guest/2022/7.area_lights/1.area_light/7.area_light.fs" target="_blank">here</a>.
+    </p>
+
+    <h2>Results</h2>
+    <p>
+      The <a href="/code_viewer_gh.php?code=src/8.guest/2022/7.area_lights/1.area_light/area_lights.cpp" target="_blank">attached source</a> code shows the entire cpp-script together with the matrix-table
+      headers, and the shader files. I have included some extra functionalities for testing:
+    </p>
+
+    <ul>
+      <li>Hold R/Shift+R to decrease/increase material roughness.</li>
+      <li>Hold I/Shift+I to decrease/increase light intensity.</li>
+      <li>Use arrow keys to move the light source around.</li>
+      <li>Use B to enable/disable double-sided illumination.</li>
+      <li>FPS-camera which moves around with WASD-keys and changes orientation with the
+	mouse. Also supports zoom with the mouse wheel.</li>
+    </ul>
+
+    <p>
+      I also added a diffuse mapping of a concrete texture to the floor plane for a bit more
+      realism. Provided you got all the code parts right you should be able to see something like
+      this:
+    </p>
+
+    <img src="/img/guest/2022/area_lights/program_example.png"/>
+
+
+    <br>
+    <h2>Measuring performance</h2>
+
+    <p>
+    This is all good and well, but you have probably wondered:
+    </p>
+
+    <ul>
+      <li>How can we place more area lights into a scene?</li>
+      <li>How fast/slow are the computations?</li>
+    </ul>
+
+    <p><div id="in_content_ad_2">
+				<!-- 728x90/300x250/320x50 --><div id="waldo-tag-15502"></div>
+				</div><p>
+    Obviously, both of these questions can have different answers depending on the graphics hardware,
+    but in general it's pretty straight-forward to test: We can introduce a uniform array of area
+    light sources to our shader, and we can use <a href="https://www.khronos.org/opengl/wiki/Query_Object" target="_blank"><tt></tt>OpenGL timestamp queries</a> for benchmarking. This is an interesting case since area lights
+    require a lot of computation - significantly more than other types of light. So while we could
+    probably fit 100-200 point lights in a scene and still have acceptable frame rates with plain
+    forward rendering, this is not doable for area lights. So creating a lighting budget would be
+    good advice if you want to release a game. The general setup for timestamp queries is shown below:
+    </p>
+
+<pre><code>GLuint timeQuery;
+glGenQueries(1, &amp;timeQuery);
+
+GLuint64 totalQueryTimeNs = 0;
+GLuint64 numQueries = 0;
+
+while (!<function id='14'>glfwWindowShouldClose</function>(window))
+{
+    [...]
+
+    glBeginQuery(GL_TIME_ELAPSED, timeQuery);
+    renderPlane();
+    glEndQuery(GL_TIME_ELAPSED);
+
+    GLuint64 elapsed = 0; // will be in nanoseconds
+    glGetQueryObjectui64v(timeQuery, GL_QUERY_RESULT, &elapsed);
+    numQueries++;
+    totalQueryTimeNs += elapsed;
+}
+
+double measuredAverageNs = (double)totalQueryTimeNs / (double)numQueries;
+double measuredAverageMs = measuredAverageNs * 1.0e-6;
+std::cout &lt;&lt; "Total average time(ms) = " &lt;&lt; measuredAverageMs &lt;&lt; '\n';
+</code></pre>
+
+    <p>
+      It is quite rudimentary, and does not take into account outliers or variance. The important
+      part is the conversion from nanoseconds to milliseconds.
+    </p>
+
+    <p>
+      The fragment shader will use a loop to iterate over the lights. But we can reuse some of
+      the information, e.g. we do not need to perform LUT texture lookups for each light. The changed
+      parts of the fragment shader now looks like this:
+    </p>
+
+<pre><code>struct AreaLight
+{
+    float intensity;
+    vec3 color;
+    vec3 points[4];
+    bool twoSided;
+};
+uniform AreaLight areaLights[16];
+uniform int numAreaLights;
+
+// [...]
+
+void main() {
+    // [...]
+    for (int i = 0; i &lt; numAreaLights; i++)
+    {
+        // Evaluate LTC shading
+        vec3 diffuse = LTC_Evaluate(N, V, P, mat3(1), areaLights[i].points, areaLights[i].twoSided);
+        vec3 specular = LTC_Evaluate(N, V, P, Minv, areaLights[i].points, areaLights[i].twoSided);
+
+        // GGX BRDF shadowing and Fresnel
+        specular *= mSpecular*t2.x + (1.0f - mSpecular) * t2.y;
+
+        // Add contribution
+        result += areaLights[i].color * areaLights[i].intensity * (specular + mDiffuse * diffuse);
+    }
+
+    fragColor = vec4(ToSRGB(result), 1.0f);
+}
+</code></pre>
+
+    <note>We must specify a fixed length of the uniform array in OpenGL,
+    even though in practice we will have fewer elements. So we set <var>numAreaLights</var> to a
+    number equal to or less than the maximal allowed number of light sources, in our case 16.</note>
+
+    <p>
+      The application can be constructed in many different ways, depending on your requirements.
+      The important part is to create an array of area light positions and send them to the shader
+      as uniforms. How this can be achieved was discussed in the chapter on
+      <a href="https://learnopengl.com/Lighting/Multiple-lights" target="_blank">Multiple lights</a>.
+      I shall here perform a rudimentary benchmark, as well as make some notes about the implementation:
+    </p>
+
+    <table>
+      <tr><th># area lights</th><th>Avg. rendering time (ms)</th></tr>
+      <tr><td>1</td><td>0.557326</td></tr>
+      <tr><td>2</td><td>0.897486</td></tr>
+      <tr><td>4</td><td>2.32212</td></tr>
+      <tr><td>8</td><td>3.9175</td></tr>
+      <tr><td>12</td><td>4.37243</td></tr>
+      <tr><td>16</td><td>3.95511</td></tr>
+      <tr><td>24</td><td>4.50246</td></tr>
+      <tr><td>32</td><td>5.67573</td></tr>
+    </table><br/>
+
+    <img src="/img/guest/2022/area_lights/multiple_benchmark.png"/><br/>
+
+    <img src="/img/guest/2022/area_lights/multiple_lights.png"/>
+
+    <p>
+      You may have a look at the <a href="/code_viewer_gh.php?code=src/8.guest/2022/7.area_lights/2.multiple_area_lights/multiple_area_lights.cpp" target="_blank">source code</a>, as well as the <a href="/code_viewer_gh.php?code=src/8.guest/2022/7.area_lights/2.multiple_area_lights/7.multi_area_light.fs" target="_blank">modified fragment shader</a>.
+    </p>
+
+    <h3>Notes</h3>
+    <p>
+    While this is not the most impressive demonstration, there are a few remarks and observations
+    that can be made from this:
+    </p>
+
+    <ul>
+      <li>The lights are pseudo-randomly placed around the textured plane.</li>
+      <li>These measurements were made on a "NVIDIA GeForce GTX 850M" laptop GPU from 2015.
+      You would likely (hopefully) experience better running times.</li>
+      <li>These lights were rendered with forward rendering.</li>
+      <li>I experienced a lot of variance when performing these benchmarks. And there are many
+	factors to consider, like what the driver is doing, what other actions the program is
+	performing, etc. The graph shows the general trend, which is a somewhat linear growth.</li>
+      <li>The numbers are obtained by wrapping the shader call which draws the textured plane with
+	calls to <fun>glBeginQuery</fun>/<fun>glEndQuery</fun>, with the <var>GL_TIME_ELAPSED</var> target parameter.
+	This query result may be obtained with <fun>glGetQueryObjectui64v</fun> and converted from
+	nanoseconds to milliseconds for computing the desired average.
+      </li>
+    </ul>
+
+    <p>
+      Especially the bullet about forward rendering is of particular interest here: In this scenario
+      I have a single draw call, which is the textured plane (ignoring the colored planes that show the
+      light sources). This setup is very unoptimal if you are rendering many objects, ie. computing
+      the lighting contribution of each light source, for each fragment, for each mesh, as this would
+      cause a lot of fragments to be discarded by depth testing.<br/>
+      A much better approach would be to use deferred lighting, which would mean computing the lighting
+      per-fragment, regardless of the number of objects being drawn.
+    </p>
+
+    <p>
+      It is probably also possible to dispatch a compute shader which divides the screen area into tiles,
+      and assigns a list of contributing area lights for each tile (ie. forward+ rendering), for
+      further optimization. This would only work well if we could define a certain maximum attenuation
+      radius for each area light, which e.g. has been done in Unreal engine (see <a href="https://docs.unrealengine.com/5.0/en-US/rectangular-area-lights-in-unreal-engine/" target="_blank">Rectangular Area Lights</a>).
+    </p>
+
+
+    <h2>Additional light types</h2>
+
+    <p>
+      It is possible to implement other types of area light sources, such as line lights or cylinder
+      lights. Albeit out-of-scope for this article, the mathematical foundation may be found in [12].
+      I have not tried to implement these myself, and thus cannot speak for their efficiency or
+      implementation details. They are simply included here for completeness. I have also observed
+      some presentations that include circular area lights.
+    </p>
+
+
+    <h2>Conclusion</h2>
+
+    <p>
+      Thank you for reading. I hope you enjoyed and learned something. For myself it was an
+      immense pleasure learning about this awesome technique, and all credits go to the researchers
+      who discovered it. As mentioned in the beginning, later extensions were made to this technique,
+      including other types of light polygons. These, as well as a section on texture mapping
+      was omitted from this tutorial for reasons of brevity. They might, however, be touched upon in
+      a future chapter.
+    </p>
+
+    <p>
+      As an ending note, it’s worth mentioning that adding shadows to area light sources is an open
+      research field. Some possible ideas involve screen-space raytracing with statistical denoising,
+      such as [9] or [10]. While obviously very interesting, these techniques are a bit out-of-scope
+      for this tutorial series. You may of course investigate further, if you wish.
+    </p>
+      
+      <author>
+  <strong>Article by: </strong>Alexander Christensen<br/>
+  <div>
+    <a href="https://www.linkedin.com/in/alexanderchr/" target="_blank">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="margin-top: 4px;" viewBox="0 0 34 34" class="global-nav__logo">
+        <path d="M34,2.5v29A2.5,2.5,0,0,1,31.5,34H2.5A2.5,2.5,0,0,1,0,31.5V2.5A2.5,2.5,0,0,1,2.5,0h29A2.5,2.5,0,0,1,34,2.5ZM10,13H5V29h5Zm.45-5.5A2.88,2.88,0,0,0,7.59,4.6H7.5a2.9,2.9,0,0,0,0,5.8h0a2.88,2.88,0,0,0,2.95-2.81ZM29,19.28c0-4.81-3.06-6.68-6.1-6.68a5.7,5.7,0,0,0-5.06,2.58H17.7V13H13V29h5V20.49a3.32,3.32,0,0,1,3-3.58h.19c1.59,0,2.77,1,2.77,3.52V29h5Z" fill="currentColor"></path>
+      </svg>
+    </a>
+  </div>
+</author>
+
+
+    <h2>References</h2>
+	<p>
+	  <ul class="abc-list">
+		<li><span>[1]</span>
+		  <i>&nbsp;&nbsp;Real-Time Polygonal-Light Shading with Linearly Transformed Cosines</i>,
+		  ACM Siggraph '16<!--'-->, <a href="https://drive.google.com/file/d/0BzvWIdpUpRx_d09ndGVjNVJzZjA/view?resourcekey=0-21tmiqk55JIZU8UoeJatXQ" target="_blank">LTC.pdf</a></li>
+		<li><span>[2]</span>
+		  <i>&nbsp;&nbsp;Real-Time Area Lighting: a Journey from Research to Production</i>, presentation slides by Stephen Hill: <a href="https://advances.realtimerendering.com/s2016/s2016_ltc_rnd.pdf" target="_blank">s2016_ltc_rnd.pdf</a></li>
+		<li><span>[3]</span>
+		  <i>&nbsp;&nbsp;Real-Time Polygonal-Light Shading with Linearly Transformed Cosines</i>, presentationslides by Eric Heitz: <a href="https://drive.google.com/file/d/0BzvWIdpUpRx_Z2pZWWFtam5xTFE/view?resourcekey=0-K9rJBtyrgGtxfP3XHDUCyQ" target="_blank">slides.pdf</a></li>
+		<li><span>[4]</span>
+		  &nbsp;&nbsp;Main reference github repo: <a href="https://github.com/selfshadow/ltc_code" target="_blank">https://github.com/selfshadow/ltc_code</a>. Contains precomputed matrices, source code for WebGL examples, and source code for recomputing the matrices with different BRDF-models.</li>
+		<li><span>[5]</span>
+		  <i>&nbsp;&nbsp;Lighting with Linearly Transformed Cosines</i>, blog post by Tom Grove further investigating the technique.
+		  <a href="https://tomgroveblog.wordpress.com/2016/04/30/ltcpost/" target="_blank">blog</a></li>
+		<li><span>[6]</span>
+		  <i>&nbsp;&nbsp;Real-Time Polygonal-Light Shading with Linearly Transformed Cosines</i>, Supplemental video showcasing the technique: <a href="https://www.youtube.com/watch?v=ZLRgEN7AQgM&ab_channel=JonathanDupuy" target="_blank">Youtube</a></li>
+		<li><span>[7]</span>
+		  <i>&nbsp;&nbsp;Adam - Unity</i>, award-winning real-time-rendered short film by the Unity Demo team using the technique: <a href="https://www.youtube.com/watch?v=GXI0l3yqBrA&ab_channel=Unity" target="_blank">Youtube</a></li>
+		<li><span>[8]</span>
+		  &nbsp;&nbsp;Interactive WebGL-demo:
+		  <a href="https://blog.selfshadow.com/ltc/webgl/ltc_quad.html" target="_blank">blog.selfshadow.com</a></li>
+		<li><span>[9]</span>
+		  <i>&nbsp;&nbsp;Combining Analytic Direct Illumination and Stochastic Shadows</i>, Eric Heitz et al.: <a href="https://research.nvidia.com/sites/default/files/pubs/2018-05_Combining-Analytic-Direct//I3D2018_combining.pdf" target="_blank">I3D2018 combining.pdf</a></li>
+		<li><span>[10]</span>
+		  <i>&nbsp;Fast Analytic Soft Shadows from Area Lights</i>, Aakash KT et al.: <a href="https://diglib.eg.org/bitstream/handle/10.2312/sr20211295/111-120.pdf" target="_blank">111-120.pdf</a></li>
+		<li><span>[11]</span>
+		  <i>&nbsp;Stoke's theorem</i>: <a href="https://en.wikipedia.org/wiki/Stokes%27_theorem" target="_blank">Wikipedia</a></li>
+		<li><span>[12]</span>
+		  <i>&nbsp;Linear-Light Shading with Linearly Transformed Cosines</i>: <a href="https://hal.archives-ouvertes.fr/hal-02155101/document" target="_blank">HAL archives</a></li>
+		<!--'-->
+		<li><span>[13]</span>
+		  &nbsp;Alan Watt and Mark Watt: <i>&nbsp;Advanced Animation and Rendering Techniques, Theory and Practice</i>, Addison Wesley, 1992</li>
+	  </ul>
+	</p>    </div>
+    
+    <div id="hover">
+        HI
+    </div>
+	
+	
+<!-- 728x90/320x50 sticky footer -->
+<div id="disqus_thread"></div>
+
+</div> <!-- container div -->
+
+
+</div> <!-- super container div -->
+</body>
+</html>

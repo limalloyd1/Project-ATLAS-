@@ -1,0 +1,8 @@
+For this we'll be using the socket library in C to test the connection speed between nodes on our LAN. We will set a service to listen on port 54321 on the server and ping it with a client. 
+
+Speed can be tested through repeated message sending. 
+
+Is our ephermeral private port 54321 secure over TCP or should we probe with UDP.  
+
+
+
